@@ -10,7 +10,6 @@
     <head>
         <title>Converge</title>
         <meta name="viewport" content="width = device-width, initial-scale = 1.0 ">
-        
     </head>
     <body>
         <!-- Header -->
@@ -24,14 +23,14 @@
         <section>
             <!-- TODO: Center a div / box -->
             <div>
-                <form>
+                <form action="login" method="POST">
                     <label>Username</label>
                     <input type="email">
 
                     <label>Password</label>
                     <input type="password">
 
-                    <button type="submit" onsubmit=""></button>
+                    <button type="submit"></button>
                 </form>
             </div>
         </section>

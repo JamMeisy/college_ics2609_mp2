@@ -1,32 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
     <context-param>
-        <param-name>JDBC Driver</param-name>
-        <param-value/>
+        <param-name>driver</param-name>
+        <param-value>org.apache.derby.jdbc.ClientDriver</param-value>
     </context-param>
     <context-param>
-        <param-name>JDBC Username</param-name>
-        <param-value/>
+        <param-name>user</param-name>
+        <param-value>app</param-value>
     </context-param>
     <context-param>
-        <param-name>JDBC Password</param-name>
-        <param-value/>
+        <param-name>pass</param-name>
+        <param-value>app</param-value>
     </context-param>
     <context-param>
-        <param-name>JDBC URL</param-name>
-        <param-value/>
+        <param-name>url</param-name>
+        <param-value>jdbc:derby://localhost:1527/UserDB</param-value>
     </context-param>
     <context-param>
         <param-name>Developers</param-name>
         <param-value/>
     </context-param>
+    
+    
     <servlet>
         <servlet-name>Servlet</servlet-name>
-        <servlet-class>LoginServlet</servlet-class>
+        <servlet-class>test.LoginServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Servlet2</servlet-name>
-        <servlet-class>LogoutServlet</servlet-class>
+        <servlet-class>test.LogoutServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Servlet</servlet-name>
@@ -36,12 +38,41 @@
         <servlet-name>Servlet2</servlet-name>
         <url-pattern>/logout</url-pattern>
     </servlet-mapping>
+    
+    
+    
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+    </welcome-file-list>
+    <error-page>
+        <exception-type>java.lang.NullPointerException</exception-type>
+        <location>/noLoginCredentials.jsp</location>
+    </error-page>
+    <error-page>
+        <exception-type>exceptions.WrongUserNullPassException</exception-type>
+        <location>/error_1.jsp</location>
+    </error-page>
+    <error-page>
+        <exception-type>exceptions.AuthenticationType1Exception</exception-type>
+        <location>/error_2.jsp</location>
+    </error-page>
+    <error-page>
+        <exception-type>exceptions.AuthenticationType2Exception</exception-type>
+        <location>/error_3.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/error_4.jsp</location>
+    </error-page>
+    <error-page>
+        <exception-type>exceptions.InvalidSessionException</exception-type>
+        <location>/error_session.jsp</location>
+    </error-page>
+        
+    
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
-    <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
-    </welcome-file-list>
 </web-app>
