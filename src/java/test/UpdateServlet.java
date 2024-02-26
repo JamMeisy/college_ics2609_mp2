@@ -5,13 +5,13 @@ package test;
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-import exceptions.*;
+
 import java.io.IOException;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.sql.*;
 
-public class LoginServlet extends HttpServlet {
+public class UpdateServlet extends HttpServlet {
     
     String driver, url, dbuser, dbpass;
     public void init(ServletConfig config) throws ServletException {
@@ -28,66 +28,62 @@ public class LoginServlet extends HttpServlet {
         HttpSession session = request.getSession();
         String username = request.getParameter("username");
         String password = request.getParameter("password");
+        String confirmpassword = request.getParameter("confirmpassword");
+        String role = request.getParameter("role");             
         
         System.out.println("---------------------------------------------");
         try {
+            // Safety Protocols
+            System.out.println("1) Initializing Preliminary Safety Protocols...");
+            
+            if (!password.equals(confirmpassword)) {
+                System.out.println("-- Error: Passwords do not match!");
+                
+                request.setAttribute("message-type", "error");
+                request.setAttribute("message", "Passwords do not match!");
+                request.getRequestDispatcher("/app").forward(request, response);
+                return;
+            }
+            if (session.getAttribute("username").equals(username) && role.equals("Guest")) {
+                System.out.println("-- Error: You cannot set your own role to a Guest!");
+                
+                request.setAttribute("message-type", "error");
+                request.setAttribute("message", "You cannot set your own role to a Guest!");
+                request.getRequestDispatcher("/app").forward(request, response);
+                return;
+            } 
+            
             // Load Driver & Establishing Connection
             Class.forName(driver);
-            System.out.println("1) Loaded Driver: " + driver);
+            System.out.println("2) Loaded Driver: " + driver);
             Connection conn = DriverManager.getConnection(url, dbuser,dbpass);
-            System.out.println("2) Connected to: " + url);
-            
-            // Login Verification
-            Statement stmt = conn.createStatement();
-            String query = "SELECT * FROM user_info";
-            ResultSet rs = stmt.executeQuery(query);
-            System.out.println("3) Executed Query: " + query);
+            System.out.println("3) Connected to: " + url);
+
+            // Delete User
+            String query = "UPDATE user_info SET password=?, role=? WHERE username=?";
+            PreparedStatement update = conn.prepareStatement(query);    
+            update.setString(1, password);
+            update.setString(2, role);
+            update.setString(3, username);
+            int rows = update.executeUpdate();
+ 
+            if (rows > 0) {
+                System.out.println("4) User " + username + " has been updated successfully!");
                 
-            System.out.println("4) Verifying Login Credentials");     
-            if (username == null)
-                // User is blank
-                throw new NullPointerException();
-            
-            boolean userExists = false;
-            while (rs.next()) {
-                String checkUser = rs.getString("username");
-                if (username.equals(checkUser)) {
-                    userExists = true;
-                    break;
-                }
+                request.setAttribute("message-type", "success");
+                request.setAttribute("message", "User " + username + " has been updated successfully!");
             }
-            
-            if (!userExists) {
-                // User not in DB
-                System.out.println("--- Username \"" + username + "\" does not exist");
-                
-                if (password == null)
-                    // Pass is blank
-                    throw new WrongUserNullPassException("Incorrect Username, Blank Password");
-                
-                // Pass is incorrect
-                throw new AuthenticationType2Exception("Incorrect Username, Incorrect Password");    
-            }
-            
             else {
-                System.out.println("--- Username \"" + username + "\" exists!");
-                String verify = rs.getString("password");
-                String role = rs.getString("role");
+                System.out.println("-- Error: Something went wrong! ");
                 
-                if (!password.equals(verify))
-                    throw new AuthenticationType1Exception("Correct Username, Incorrect Password");
-               
-                System.out.println("5) Verification Successful");
-                
-                session.setAttribute("username", username);
-                session.setAttribute("role", role);
-                response.sendRedirect("app");      
+                request.setAttribute("message-type", "error");
+                request.setAttribute("message", "Something went wrong!");
             }
-            
+
             // Close the connection
-            rs.close();
-            stmt.close();
-            conn.close();
+            update.close();
+            conn.close();           
+            request.getRequestDispatcher("/app").forward(request, response);
             
         } catch (SQLException | ClassNotFoundException sqle) {
             sqle.printStackTrace();

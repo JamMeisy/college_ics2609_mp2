@@ -1,10 +1,10 @@
 <%-- 
-    Document   : error_session
-    Created on : 02 23, 24, 11:28:58 AM
+    Document   : noLoginCredentials
+    Created on : 02 25, 24, 12:52:44 PM
     Author     : Jam
 --%>
 
-<!-- Unauthorized Access / Session Invalid -->
+<!-- No login credentials (blank username and password) -->
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -12,10 +12,10 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Company DBMS</title>
         <meta name="viewport" content="width = device-width, initial-scale = 1.0 ">
-        <link rel="stylesheet" href="static/styles-error.css">    
+        <link rel="stylesheet" href="static/styles-error.css">  
     </head>
     <body>
-        <!-- Header -->
+         <!-- Header -->
         <header>
             <nav>
                 <img src="" alt="logo"/>

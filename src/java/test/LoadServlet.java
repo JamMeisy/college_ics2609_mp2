@@ -1,18 +1,22 @@
-package test;
-
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
+package test;
 
-import exceptions.*;
 import java.io.IOException;
-import javax.servlet.*;
-import javax.servlet.http.*;
 import java.sql.*;
+import java.util.ArrayList;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.*;
 
-public class LoginServlet extends HttpServlet {
-    
+/**
+ *
+ * @author Jam
+ */
+public class LoadServlet extends HttpServlet {
+
     String driver, url, dbuser, dbpass;
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
@@ -23,11 +27,16 @@ public class LoginServlet extends HttpServlet {
     }
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException  {
+            throws ServletException, IOException {
+           
+        // For reloading Attributes
+        String messagetype = (String) request.getAttribute("message-type");
+        String message = (String) request.getAttribute("message");
+        request.setAttribute("message-type", messagetype);
+        request.setAttribute("message", message);     
+        if (message != null)
+            System.out.println("0)" + request.getAttribute("message"));
         
-        HttpSession session = request.getSession();
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
         
         System.out.println("---------------------------------------------");
         try {
@@ -37,57 +46,33 @@ public class LoginServlet extends HttpServlet {
             Connection conn = DriverManager.getConnection(url, dbuser,dbpass);
             System.out.println("2) Connected to: " + url);
             
-            // Login Verification
+            // Transfer data
             Statement stmt = conn.createStatement();
-            String query = "SELECT * FROM user_info";
+            String query = "SELECT * FROM user_info ORDER BY username ASC";
             ResultSet rs = stmt.executeQuery(query);
             System.out.println("3) Executed Query: " + query);
-                
-            System.out.println("4) Verifying Login Credentials");     
-            if (username == null)
-                // User is blank
-                throw new NullPointerException();
+                      
+            ArrayList<UserData> data = new ArrayList<UserData>();
+            System.out.println("4) Recording Queries...");
             
-            boolean userExists = false;
-            while (rs.next()) {
-                String checkUser = rs.getString("username");
-                if (username.equals(checkUser)) {
-                    userExists = true;
-                    break;
-                }
-            }
+            while (rs.next())
+                data.add(new UserData(rs.getString("username"), rs.getString("password"), rs.getString("role")));         
             
-            if (!userExists) {
-                // User not in DB
-                System.out.println("--- Username \"" + username + "\" does not exist");
-                
-                if (password == null)
-                    // Pass is blank
-                    throw new WrongUserNullPassException("Incorrect Username, Blank Password");
-                
-                // Pass is incorrect
-                throw new AuthenticationType2Exception("Incorrect Username, Incorrect Password");    
-            }
+            for (UserData x : data)
+                System.out.println("-\tUsername: " + x.getUsername() + "\t\tPassword: " + x.getPassword() + "\t\tRole: " + x.getRole());
             
-            else {
-                System.out.println("--- Username \"" + username + "\" exists!");
-                String verify = rs.getString("password");
-                String role = rs.getString("role");
-                
-                if (!password.equals(verify))
-                    throw new AuthenticationType1Exception("Correct Username, Incorrect Password");
-               
-                System.out.println("5) Verification Successful");
-                
-                session.setAttribute("username", username);
-                session.setAttribute("role", role);
-                response.sendRedirect("app");      
-            }
-            
+
             // Close the connection
             rs.close();
             stmt.close();
             conn.close();
+            
+            System.out.println("5) Data recorded... Transferring data");
+            
+            request.setAttribute("data", data);
+            request.getRequestDispatcher("/success.jsp").forward(request, response);
+            
+            System.out.println("6) Data transferred successfully!");
             
         } catch (SQLException | ClassNotFoundException sqle) {
             sqle.printStackTrace();
