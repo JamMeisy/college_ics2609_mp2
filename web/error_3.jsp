@@ -19,8 +19,8 @@
         <header>
             <nav>
                 <img src="" alt="logo"/>
-                <a href="logout">
-                    <img src="" alt="logout">
+                <a href="./">
+                    <img src="" alt="login">
                 </a>
             </nav>
         </header>

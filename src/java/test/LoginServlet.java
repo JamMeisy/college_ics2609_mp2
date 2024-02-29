@@ -44,7 +44,7 @@ public class LoginServlet extends HttpServlet {
             System.out.println("3) Executed Query: " + query);
                 
             System.out.println("4) Verifying Login Credentials");     
-            if (username == null)
+            if (username.equals(""))
                 // User is blank
                 throw new NullPointerException();
             
@@ -60,13 +60,13 @@ public class LoginServlet extends HttpServlet {
             if (!userExists) {
                 // User not in DB
                 System.out.println("--- Username \"" + username + "\" does not exist");
-                
-                if (password == null)
+                System.out.println("--- Password = \"" + password + "\"");
+                if (password.equals(""))
                     // Pass is blank
                     throw new WrongUserNullPassException("Incorrect Username, Blank Password");
-                
-                // Pass is incorrect
-                throw new AuthenticationType2Exception("Incorrect Username, Incorrect Password");    
+                else
+                    // Pass is incorrect
+                    throw new AuthenticationType2Exception("Incorrect Username, Incorrect Password");    
             }
             
             else {

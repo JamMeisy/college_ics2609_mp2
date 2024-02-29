@@ -17,9 +17,13 @@
         <param-value>jdbc:derby://localhost:1527/UserDB</param-value>
     </context-param>
     <context-param>
-        <param-name>Developers</param-name>
-        <param-value/>
+        <param-name>Logo</param-name>
+        <param-value>//Enter Logo</param-value>
     </context-param>   
+    <context-param>
+        <param-name>Developers</param-name>
+        <param-value>//Enter Names</param-value>
+    </context-param>
     
     <servlet>
         <servlet-name>Servlet1</servlet-name>
