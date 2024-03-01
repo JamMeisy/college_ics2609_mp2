@@ -60,13 +60,13 @@ public class LoginServlet extends HttpServlet {
             if (!userExists) {
                 // User not in DB
                 System.out.println("--- Username \"" + username + "\" does not exist");
-                
+                System.out.println("--- Password = \"" + password + "\"");
                 if (password.equals(""))
                     // Pass is blank
                     throw new WrongUserNullPassException("Incorrect Username, Blank Password");
                 else
-                // Pass is incorrect
-                throw new AuthenticationType2Exception("Incorrect Username, Incorrect Password");    
+                    // Pass is incorrect
+                    throw new AuthenticationType2Exception("Incorrect Username, Incorrect Password");    
             }
             
             else {
