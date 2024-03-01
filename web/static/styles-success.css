@@ -7,6 +7,125 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     Author     : Jam
 */
 
+header {
+    background-color: rgba(0, 0, 0, 0.5);
+    height: 56px;
+    padding: 16px;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    font-family: 'Plus Jakarta Sans', cursive;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000; 
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    color: white;
+    width: 100%;
+}
+
+.left-item,
+.right-item {
+    display: flex;
+    align-items: center;
+    margin: 0 18px 0 18px;
+}
+
+.left-item img {
+    width: 50px; 
+    height: auto; 
+}
+
+.logout-button {
+    margin: 0 0 0 156px;
+    color: white;
+    font-family: 'Plus Jakarta Sans', cursive;
+    text-decoration: none; 
+    transition: color 0.3s; 
+}
+
+.logout-button:hover {
+    color: rgba(0, 0, 0, 0.7); 
+}
+
+.header-text {
+    order: 1;
+    margin-left: auto; 
+}
+
+body {
+    background-image: url(../assets/test.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed; 
+    margin: 0;
+    padding: 0;
+    background-color: rgba(255, 255, 255, 0.85); 
+}
+
+section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.box {
+    max-width: 400px;
+    height: 400px;
+    margin: 10vh auto;
+    padding: 30px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.box h1,
+.box h2 {
+    text-align: center;
+    color: white;
+    margin-bottom: 35px;
+    font-family: 'Plus Jakarta Sans', cursive;
+}
+
+.box h1 {
+    font-size: 40px;
+    margin-top: 70px;
+    margin-bottom: 100px;
+}
+
+.box h2 {
+    font-size: 30px; /* Adjust the font size for h2 as needed */
+}
+
+.footer {
+    background-color: rgba(0, 0, 0, 0.5);
+    height: 56px;
+    padding: 16px;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Plus Jakarta Sans', cursive;
+    color: white;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    font-weight: bold;
+    z-index: 1000;
+}
+
 .hidden {
     display: none;
 }
@@ -15,3 +134,5 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     overflow: hidden;
     overflow-y: scroll;
 }
+
+

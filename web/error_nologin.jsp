@@ -13,25 +13,31 @@
         <title>Company DBMS</title>
         <meta name="viewport" content="width = device-width, initial-scale = 1.0 ">
         <link rel="stylesheet" href="static/styles-error.css">  
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400&display=swap">
     </head>
     <body>
-         <!-- Header -->
-        <header>
+        <!-- Header -->
+        <<header>
             <nav>
-                <img src="" alt="logo"/>
-                <a href="logout">
-                    <img src="" alt="logout">
-                </a>
+                <div class="left-item">
+                    <img src=<%= getServletContext().getInitParameter("Header")%> alt="logo"/>
+                </div>
+                <div class="right-item">
+                    <span class="header-text">Error</span>
+                </div>
             </nav>
         </header>
 
         <!-- Body -->
         <section>
-            <a href="./">Return</a>
+            <div class="box">
+                <h2>ERROR: No Login Credentials</h2>
+                <button class="return-button" onclick="window.location.href='index.jsp'">Return</button>
+            </div>
         </section>
         <!-- Footer -->
-        <footer>
-
+        <footer class="footer">
+            <%= getServletContext().getInitParameter("Footer") %>
         </footer>
     </body>
 </html>

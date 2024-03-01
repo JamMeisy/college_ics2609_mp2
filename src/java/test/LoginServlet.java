@@ -16,10 +16,10 @@ public class LoginServlet extends HttpServlet {
     String driver, url, dbuser, dbpass;
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        driver = getServletContext().getInitParameter("driver");
-        url = getServletContext().getInitParameter("url");
-        dbuser = getServletContext().getInitParameter("user");
-        dbpass = getServletContext().getInitParameter("pass");        
+        driver = config.getInitParameter("driver");
+        url = config.getInitParameter("url");
+        dbuser = config.getInitParameter("user");
+        dbpass = config.getInitParameter("pass");        
     }
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
@@ -44,7 +44,7 @@ public class LoginServlet extends HttpServlet {
             System.out.println("3) Executed Query: " + query);
                 
             System.out.println("4) Verifying Login Credentials");     
-            if (username == null)
+            if (username.equals(""))
                 // User is blank
                 throw new NullPointerException();
             
@@ -61,10 +61,10 @@ public class LoginServlet extends HttpServlet {
                 // User not in DB
                 System.out.println("--- Username \"" + username + "\" does not exist");
                 
-                if (password == null)
+                if (password.equals(""))
                     // Pass is blank
                     throw new WrongUserNullPassException("Incorrect Username, Blank Password");
-                
+                else
                 // Pass is incorrect
                 throw new AuthenticationType2Exception("Incorrect Username, Incorrect Password");    
             }
@@ -81,7 +81,12 @@ public class LoginServlet extends HttpServlet {
                 
                 session.setAttribute("username", username);
                 session.setAttribute("role", role);
-                response.sendRedirect("app");      
+                
+                response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+                response.setHeader("Pragma", "no-cache");
+                response.setDateHeader("Expires", 0);
+                
+                response.sendRedirect("success.jsp");   
             }
             
             // Close the connection

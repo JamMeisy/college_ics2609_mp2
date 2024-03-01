@@ -7,3 +7,164 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     Author     : Jam
 */
 
+header {
+    background-color: rgba(0, 0, 0, 0.5);
+    height: 56px;
+    padding: 16px;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    font-family: 'Plus Jakarta Sans', cursive;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    color: white;
+    width: 100%;
+}
+
+.left-item,
+.right-item {
+    display: flex;
+    align-items: center;
+    margin: 0 18px 0 18px;
+}
+
+.left-item img {
+    width: 50px; /* Adjust the width to your preference */
+    height: auto; /* Maintain the aspect ratio */
+}
+
+.logout-button {
+    color: white;
+    font-family: 'Plus Jakarta Sans', cursive;
+    text-decoration: none; 
+    transition: color 0.3s; 
+}
+
+.logout-button:hover {
+    color: rgba(0, 0, 0, 0.7);
+}
+
+.header-text {
+    order: 1;
+    margin-left: auto;
+}
+
+body, label, input, button {
+    font-size: 16px;
+}
+
+body {
+    background-image: url(../assets/test.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed; /* Keep the background fixed while scrolling */
+    margin: 0;
+    padding: 0;
+    background-color: rgba(255, 255, 255, 0.85); /* White with 85% opacity */
+}
+
+section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #FFFFFF;
+    font-family: 'Plus Jakarta Sans', cursive;
+    font-weight: bold;
+    width: 80%;
+    margin: 0 auto; /* Set left and right margin to auto */
+}
+
+input {
+    display: block;
+    border-radius: 15px;
+    font-size: 16px;
+    background: white;
+    width: 80%;
+    border: 0;
+    padding: 5px 5px;
+    margin: 10px auto; /* Set left and right margin to auto */
+    font-family: 'Plus Jakarta Sans', cursive;
+}
+
+.button-container {
+    text-align: right;
+}
+
+button {
+    background-color: #FFFFFF;
+    color: rgba(0, 0, 0, 1);
+    border: 0;
+    border-radius: 20px;
+    margin-top: 30px; /* Push the button to the bottom */
+    margin-left: 250px; /* Adjust as needed */
+    padding: 10px 30px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    opacity: 1;
+    visibility: visible;
+    -webkit-transition: all .3s ease;
+    font-family: 'Plus Jakarta Sans', cursive;
+}
+
+button:hover {
+    transition: all .3s ease;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #FFFFFF;
+}
+
+.login-box {
+    max-width: 400px;
+    height: 400px;
+    margin: 10vh auto;
+    padding: 30px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.login-box h2 {
+    text-align: center;
+    color: white;
+    margin-bottom: 35px;
+    font-size: 40px;
+    font-family: 'Plus Jakarta Sans', cursive;
+    font-weight: bold;
+}
+
+.footer {
+    background-color: rgba(0, 0, 0, 0.5);
+    height: 56px;
+    padding: 16px;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Plus Jakarta Sans', cursive;
+    color: white;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    font-weight: bold;
+    z-index: 1000;
+}
