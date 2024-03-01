@@ -7,3 +7,123 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     Author     : Jam
 */
 
+header {
+    background-color: rgba(0, 0, 0, 0.5);
+    height: 56px;
+    padding: 16px;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    font-family: 'Plus Jakarta Sans', cursive;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    z-index: 1000;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    color: white;
+    width: 100%;
+}
+
+.left-item,
+.right-item {
+    display: flex;
+    align-items: center;
+    margin: 0 18px 0 18px;
+}
+
+.left-item img {
+    width: 50px;
+    height: auto;
+}
+
+.header-text {
+    order: 1;
+    margin-left: auto;
+}
+
+body {
+    background-image: url(../assets/test.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed; /* Keep the background fixed while scrolling */
+    margin: 0;
+    padding: 0;
+    background-color: rgba(255, 255, 255, 0.85); /* White with 85% opacity */
+    font-family: 'Plus Jakarta Sans', cursive;
+}
+
+section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.box {
+    max-width: 400px;
+    height: 200px;
+    margin: 10vh auto;
+    padding: 30px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+.box h2 {
+    text-align: center;
+    color: white;
+    margin-top: 50px;
+    margin-bottom: 35px;
+    font-family: 'Plus Jakarta Sans', cursive;
+    font-size: 30px; /* Adjust the font size for h2 as needed */
+}
+
+.return-button {
+    background-color: #FFFFFF;
+    color: rgba(0, 0, 0, 1);
+    border: 0;
+    border-radius: 20px;
+    margin-left: 250px; 
+    padding: 10px 30px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    opacity: 1;
+    visibility: visible;
+    -webkit-transition: all .3s ease;
+    font-family: 'Plus Jakarta Sans', cursive;
+}
+
+.return-button:hover {
+    transition: all .3s ease;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #FFFFFF;
+}
+
+.footer {
+    background-color: rgba(0, 0, 0, 0.5);
+    height: 56px;
+    padding: 16px;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Plus Jakarta Sans', cursive;
+    color: white;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    font-weight: bold;
+    z-index: 1000;
+}

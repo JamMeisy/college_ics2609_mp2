@@ -1,33 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+    
     <context-param>
-        <param-name>driver</param-name>
-        <param-value>org.apache.derby.jdbc.ClientDriver</param-value>
+        <param-name>Header</param-name>
+        <param-value>assets/logo.png</param-value>
     </context-param>
     <context-param>
-        <param-name>user</param-name>
-        <param-value>app</param-value>
-    </context-param>
-    <context-param>
-        <param-name>pass</param-name>
-        <param-value>app</param-value>
-    </context-param>
-    <context-param>
-        <param-name>url</param-name>
-        <param-value>jdbc:derby://localhost:1527/UserDB</param-value>
-    </context-param>
-    <context-param>
-        <param-name>Logo</param-name>
-        <param-value>//Enter Logo</param-value>
-    </context-param>   
-    <context-param>
-        <param-name>Developers</param-name>
-        <param-value>//Enter Names</param-value>
-    </context-param>
+        <param-name>Footer</param-name>
+        <param-value>Juico | Tan - Machine Problem #2 (ICS2609)</param-value>
+    </context-param> 
+    
     
     <servlet>
         <servlet-name>Servlet1</servlet-name>
         <servlet-class>test.LoginServlet</servlet-class>
+        <init-param>
+            <param-name>driver</param-name>
+            <param-value>org.apache.derby.jdbc.ClientDriver</param-value>
+        </init-param>
+        <init-param>
+            <param-name>user</param-name>
+            <param-value>app</param-value>
+        </init-param>
+        <init-param>
+            <param-name>pass</param-name>
+            <param-value>app</param-value>
+        </init-param>
+        <init-param>
+            <param-name>url</param-name>
+            <param-value>jdbc:derby://localhost:1527/UserDB</param-value>
+        </init-param>
     </servlet>
     <servlet>
         <servlet-name>Servlet2</servlet-name>
@@ -107,4 +109,22 @@
             5
         </session-timeout>
     </session-config>
+    
+    <!-- ADVANCED -->
+    <context-param>
+        <param-name>driver</param-name>
+        <param-value>org.apache.derby.jdbc.ClientDriver</param-value>
+    </context-param>
+    <context-param>
+        <param-name>user</param-name>
+        <param-value>app</param-value>
+    </context-param>
+    <context-param>
+        <param-name>pass</param-name>
+        <param-value>app</param-value>
+    </context-param>
+    <context-param>
+        <param-name>url</param-name>
+        <param-value>jdbc:derby://localhost:1527/UserDB</param-value>
+    </context-param>
 </web-app>
