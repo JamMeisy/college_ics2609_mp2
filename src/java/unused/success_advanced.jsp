@@ -6,18 +6,19 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import = "exceptions.InvalidSessionException"%>
-<%@page import = "test.UserData"%>
+<%@page import = "user.UserData"%>
 <%@page import = "java.util.ArrayList"%>
 
 <%
+    // Verifying the Session
     if (session.getAttribute("username") == null)
         throw new InvalidSessionException("Attempting to access without authorization");
-%>
-<%
-    //Instantiating the collected data from UserDB
+        
+    // Instantiating the collected data from UserDB
     ArrayList<UserData> data = (ArrayList<UserData>) request.getAttribute("data");
 %>
 
+<!-- Sources here should be blended with original -->
 <!DOCTYPE html>
 <html>
     <head>

@@ -5,6 +5,12 @@
 --%>
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+<%  
+    // Storing Data
+    String header = (String) getServletContext().getInitParameter("Header");
+    String footer = (String) getServletContext().getInitParameter("Footer");
+    
+%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -12,7 +18,6 @@
         <title>Company DBMS</title>
         <meta name="viewport" content="width = device-width, initial-scale = 1.0 ">
         <link rel="stylesheet" href="static/styles-login.css">
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400&display=swap">
     </head>
     <body>
         <!-- Header -->
@@ -20,7 +25,7 @@
             
             <nav>
                 <div class="left-item">
-                    <img src=<%= getServletContext().getInitParameter("Header") %> alt="logo"/>
+                    <img src=<%= header %> alt="logo"/>
                 </div>
                 <div class="right-item">
                     <span class="header-text">Login Page</span>
@@ -45,7 +50,7 @@
         </section>
         <!-- Footer -->
         <footer class="footer">
-            <%= getServletContext().getInitParameter("Footer") %>
+            <%= footer %>
         </footer>
     </body>
 </html>

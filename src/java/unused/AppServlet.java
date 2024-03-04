@@ -2,8 +2,9 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
-package test;
+package unused;
 
+import user.UserData;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -15,10 +16,9 @@ import javax.servlet.http.*;
  *
  * @author Jam
  */
-public class LoadServlet extends HttpServlet {
+public class AppServlet extends HttpServlet {
 
     String driver, url, dbuser, dbpass;
-
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         driver = getServletContext().getInitParameter("driver");
@@ -73,13 +73,8 @@ public class LoadServlet extends HttpServlet {
 
             System.out.println("5) Data recorded... Transferring data");
 
-            response.setHeader("Pragma", "no-cache");
-            response.setHeader("Cache-Control", "no-store");
-            response.setHeader("Expires", "0");
-            response.setDateHeader("Expires", -1);
-
             request.getSession().setAttribute("data", data);
-            response.sendRedirect("success.jsp");
+            request.getRequestDispatcher("success.jsp").forward(request, response);
 
             System.out.println("6) Data transferred successfully!");
 

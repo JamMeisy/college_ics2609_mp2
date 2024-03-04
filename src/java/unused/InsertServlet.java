@@ -1,4 +1,4 @@
-package test;
+package unused;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -10,7 +10,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import java.sql.*;
 
-public class DeleteServlet extends HttpServlet {
+public class InsertServlet extends HttpServlet {
     
     String driver, url, dbuser, dbpass;
     public void init(ServletConfig config) throws ServletException {
@@ -26,20 +26,24 @@ public class DeleteServlet extends HttpServlet {
         
         HttpSession session = request.getSession();
         String username = request.getParameter("username");
-
+        String password = request.getParameter("password");
+        String confirmpassword = request.getParameter("confirmpassword");
+        String role = request.getParameter("role");
+        
         System.out.println("---------------------------------------------");
         try {
             // Safety Protocols
             System.out.println("1) Initializing Preliminary Safety Protocols...");
             
-            if (session.getAttribute("username").equals(username)) {
-                System.out.println("-- Error: You cannot delete user of current session!");
+            if (!password.equals(confirmpassword)) {
+                System.out.println("-- Error: Passwords do not match!");
                 
                 request.setAttribute("message-type", "error");
-                request.setAttribute("message", "You cannot delete user of current session!");
+                request.setAttribute("message", "Passwords do not match!");
                 request.getRequestDispatcher("/app").forward(request, response);
                 return;
             }
+            
             
             // Load Driver & Establishing Connection
             Class.forName(driver);
@@ -48,26 +52,28 @@ public class DeleteServlet extends HttpServlet {
             System.out.println("3) Connected to: " + url);
 
             // Delete User
-            String query = "DELETE FROM user_info WHERE username=?";
-            PreparedStatement delete = conn.prepareStatement(query);
-            delete.setString(1, username);
-            int rows = delete.executeUpdate();
+            String query = "INSERT INTO user_info VALUES (?, ?, ?)";
+            PreparedStatement insert = conn.prepareStatement(query);
+            insert.setString(1, username);
+            insert.setString(2, password);
+            insert.setString(3, role);
+            int rows = insert.executeUpdate();
  
             if (rows > 0) {
-                System.out.println("4) User " + username + " has been deleted successfully!");
+                System.out.println("4) User " + username + " has been added successfully!");
                 
                 request.setAttribute("message-type", "success");
-                request.setAttribute("message", "User " + username + " has been deleted successfully!");
+                request.setAttribute("message", "User " + username + " has been added successfully!");
             }
             else {
-                System.out.println("-- Error: Something went wrong! ");
+                System.out.println("-- Error: User already exists! ");
                 
                 request.setAttribute("message-type", "error");
-                request.setAttribute("message", "Something went wrong.");
+                request.setAttribute("message", "User already exists!");
             }
 
             // Close the connection
-            delete.close();
+            insert.close();
             conn.close();           
             request.getRequestDispatcher("/app").forward(request, response);
             

@@ -7,6 +7,8 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     Author     : Jam
 */
 
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400&display=swap");
+
 header {
     background-color: rgba(0, 0, 0, 0.5);
     height: 56px;

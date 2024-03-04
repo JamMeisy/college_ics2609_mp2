@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
-    
     <context-param>
         <param-name>Header</param-name>
         <param-value>assets/logo.png</param-value>
@@ -8,12 +7,10 @@
     <context-param>
         <param-name>Footer</param-name>
         <param-value>Juico | Tan - Machine Problem #2 (ICS2609)</param-value>
-    </context-param> 
-    
-    
+    </context-param>
     <servlet>
         <servlet-name>Servlet1</servlet-name>
-        <servlet-class>test.LoginServlet</servlet-class>
+        <servlet-class>backend.LoginServlet</servlet-class>
         <init-param>
             <param-name>driver</param-name>
             <param-value>org.apache.derby.jdbc.ClientDriver</param-value>
@@ -33,23 +30,23 @@
     </servlet>
     <servlet>
         <servlet-name>Servlet2</servlet-name>
-        <servlet-class>test.LogoutServlet</servlet-class>
+        <servlet-class>backend.LogoutServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Servlet3</servlet-name>
-        <servlet-class>test.InsertServlet</servlet-class>
+        <servlet-class>unused.InsertServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Servlet4</servlet-name>
-        <servlet-class>test.UpdateServlet</servlet-class>
+        <servlet-class>unused.UpdateServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Servlet5</servlet-name>
-        <servlet-class>test.DeleteServlet</servlet-class>
+        <servlet-class>unused.DeleteServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Servlet6</servlet-name>
-        <servlet-class>test.LoadServlet</servlet-class>
+        <servlet-class>unused.AppServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Servlet1</servlet-name>
@@ -75,7 +72,6 @@
         <servlet-name>Servlet6</servlet-name>
         <url-pattern>/app</url-pattern>
     </servlet-mapping>
-    
     <error-page>
         <exception-type>java.lang.NullPointerException</exception-type>
         <location>/error_nologin.jsp</location>
@@ -99,8 +95,7 @@
     <error-page>
         <exception-type>exceptions.InvalidSessionException</exception-type>
         <location>/error_session.jsp</location>
-    </error-page>   
-    
+    </error-page>
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>
@@ -109,8 +104,8 @@
             5
         </session-timeout>
     </session-config>
-    
-    <!-- ADVANCED -->
+    <!-- 
+    ADVANCED
     <context-param>
         <param-name>driver</param-name>
         <param-value>org.apache.derby.jdbc.ClientDriver</param-value>
@@ -127,4 +122,5 @@
         <param-name>url</param-name>
         <param-value>jdbc:derby://localhost:1527/UserDB</param-value>
     </context-param>
+    -->
 </web-app>
