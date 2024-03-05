@@ -1,17 +1,16 @@
-package unused;
+package backend;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-
 import java.io.IOException;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.sql.*;
 
-public class UpdateServlet extends HttpServlet {
+public class DeleteServlet extends HttpServlet {
     
     String driver, url, dbuser, dbpass;
     public void init(ServletConfig config) throws ServletException {
@@ -25,33 +24,23 @@ public class UpdateServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException  {
         
+        System.out.println("---------------------------------------------");
+        
         HttpSession session = request.getSession();
         String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        String confirmpassword = request.getParameter("confirmpassword");
-        String role = request.getParameter("role");             
         
-        System.out.println("---------------------------------------------");
         try {
             // Safety Protocols
             System.out.println("1) Initializing Preliminary Safety Protocols...");
             
-            if (!password.equals(confirmpassword)) {
-                System.out.println("-- Error: Passwords do not match!");
+            if (username.equals(session.getAttribute("username"))) {
+                System.out.println("-- Error: You cannot delete user of current session!");
                 
                 request.setAttribute("message-type", "error");
-                request.setAttribute("message", "Passwords do not match!");
+                request.setAttribute("message", "You cannot delete user of current session!");
                 request.getRequestDispatcher("/app").forward(request, response);
                 return;
             }
-            if (session.getAttribute("username").equals(username) && role.equals("Guest")) {
-                System.out.println("-- Error: You cannot set your own role to a Guest!");
-                
-                request.setAttribute("message-type", "error");
-                request.setAttribute("message", "You cannot set your own role to a Guest!");
-                request.getRequestDispatcher("/app").forward(request, response);
-                return;
-            } 
             
             // Load Driver & Establishing Connection
             Class.forName(driver);
@@ -60,28 +49,26 @@ public class UpdateServlet extends HttpServlet {
             System.out.println("3) Connected to: " + url);
 
             // Delete User
-            String query = "UPDATE user_info SET password=?, role=? WHERE username=?";
-            PreparedStatement update = conn.prepareStatement(query);    
-            update.setString(1, password);
-            update.setString(2, role);
-            update.setString(3, username);
-            int rows = update.executeUpdate();
+            String query = "DELETE FROM user_info WHERE username=?";
+            PreparedStatement delete = conn.prepareStatement(query);
+            delete.setString(1, username);
+            int rows = delete.executeUpdate();
  
             if (rows > 0) {
-                System.out.println("4) User " + username + " has been updated successfully!");
+                System.out.println("4) User " + username + " has been deleted successfully!");
                 
                 request.setAttribute("message-type", "success");
-                request.setAttribute("message", "User " + username + " has been updated successfully!");
+                request.setAttribute("message", "User " + username + " has been deleted successfully!");
             }
             else {
                 System.out.println("-- Error: Something went wrong! ");
                 
                 request.setAttribute("message-type", "error");
-                request.setAttribute("message", "Something went wrong!");
+                request.setAttribute("message", "Something went wrong.");
             }
 
             // Close the connection
-            update.close();
+            delete.close();
             conn.close();           
             request.getRequestDispatcher("/app").forward(request, response);
             

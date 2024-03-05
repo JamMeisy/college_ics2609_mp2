@@ -16,7 +16,7 @@
     </head>
     <body>
         <!-- Header -->
-        <<header>
+        <header>
             <nav>
                 <div class="left-item">
                     <img src=<%= getServletContext().getInitParameter("Header")%> alt="logo"/>

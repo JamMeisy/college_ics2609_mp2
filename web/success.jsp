@@ -33,7 +33,7 @@
         <header>
             <nav>
                 <div class="left-item">
-                    <img src="<%= header%>" alt="logo" />
+                    <img src="<%= header %>" alt="logo" />
                 </div>
                 <div class="center-item">
                     <a href="logout" class="logout-button">Logout</a>

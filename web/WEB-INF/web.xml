@@ -8,9 +8,19 @@
         <param-name>Footer</param-name>
         <param-value>Juico | Tan - Machine Problem #2 (ICS2609)</param-value>
     </context-param>
+    <context-param>
+        <param-name>key</param-name>
+        <param-value>fourfourfourfour</param-value>
+    </context-param>
+    <context-param>
+        <param-name>cipher</param-name>
+        <param-value>AES/ECB/PKCS5Padding</param-value>
+    </context-param>
+    
     <servlet>
         <servlet-name>Servlet1</servlet-name>
         <servlet-class>backend.LoginServlet</servlet-class>
+        <!-- For ServletConfig of Login -->
         <init-param>
             <param-name>driver</param-name>
             <param-value>org.apache.derby.jdbc.ClientDriver</param-value>
@@ -34,7 +44,7 @@
     </servlet>
     <servlet>
         <servlet-name>Servlet3</servlet-name>
-        <servlet-class>unused.InsertServlet</servlet-class>
+        <servlet-class>backend.InsertServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Servlet4</servlet-name>
@@ -42,12 +52,13 @@
     </servlet>
     <servlet>
         <servlet-name>Servlet5</servlet-name>
-        <servlet-class>unused.DeleteServlet</servlet-class>
+        <servlet-class>backend.DeleteServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Servlet6</servlet-name>
-        <servlet-class>unused.AppServlet</servlet-class>
+        <servlet-class>backend.AppServlet</servlet-class>
     </servlet>
+    
     <servlet-mapping>
         <servlet-name>Servlet1</servlet-name>
         <url-pattern>/login</url-pattern>
@@ -104,8 +115,7 @@
             5
         </session-timeout>
     </session-config>
-    <!-- 
-    ADVANCED
+    <!-- ADVANCED -->
     <context-param>
         <param-name>driver</param-name>
         <param-value>org.apache.derby.jdbc.ClientDriver</param-value>
@@ -122,5 +132,4 @@
         <param-name>url</param-name>
         <param-value>jdbc:derby://localhost:1527/UserDB</param-value>
     </context-param>
-    -->
 </web-app>

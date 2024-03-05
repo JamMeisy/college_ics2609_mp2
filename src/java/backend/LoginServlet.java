@@ -14,23 +14,37 @@ import java.sql.*;
 public class LoginServlet extends HttpServlet {
     
     // Takes data from ServletConfig, NOT ServletContext
-    String driver, url, dbuser, dbpass;
+    String driver, url, dbuser, dbpass, key, cipher;
+    Security sec;
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         driver = config.getInitParameter("driver");
         url = config.getInitParameter("url");
         dbuser = config.getInitParameter("user");
-        dbpass = config.getInitParameter("pass");        
+        dbpass = config.getInitParameter("pass");
+        
+        // ServletContext
+        key = getServletContext().getInitParameter("key");
+        cipher = getServletContext().getInitParameter("cipher");
+        sec = new Security(key, cipher);
     }
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException  {
         
+        System.out.println("---------------------------------------------");
+        
         HttpSession session = request.getSession();
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         
-        System.out.println("---------------------------------------------");
+        // Password is being encrypted
+        String encryptedPassword = sec.encrypt(password);       
+        System.out.println("0) Encrypting Password ");
+        System.out.println("-- Password: " + password);
+        System.out.println("-- Encrypted Password: " + encryptedPassword);
+        
+        
         try {
             // Load Driver & Establishing Connection
             Class.forName(driver);
@@ -74,11 +88,11 @@ public class LoginServlet extends HttpServlet {
             
             else {
                 System.out.println("--- Username \"" + username + "\" exists!");
-                String verify = rs.getString("password");
+                String encryptedVerify = rs.getString("password");
                 String role = rs.getString("role");
                 
                 // Case 4: Correct Username with Incorrect Password
-                if (!password.equals(verify))
+                if (encryptedPassword == null || !encryptedPassword.equals(encryptedVerify))
                     throw new AuthenticationType1Exception("Correct Username, Incorrect Password");
                
                 System.out.println("5) Verification Successful");

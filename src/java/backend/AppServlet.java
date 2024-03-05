@@ -1,82 +1,84 @@
-package unused;
-
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
+package backend;
 
+import user.UserData;
 import java.io.IOException;
-import javax.servlet.*;
-import javax.servlet.http.*;
 import java.sql.*;
+import java.util.ArrayList;
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.*;
 
-public class InsertServlet extends HttpServlet {
-    
+/**
+ *
+ * @author Jam
+ */
+public class AppServlet extends HttpServlet {
+
     String driver, url, dbuser, dbpass;
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         driver = getServletContext().getInitParameter("driver");
         url = getServletContext().getInitParameter("url");
         dbuser = getServletContext().getInitParameter("user");
-        dbpass = getServletContext().getInitParameter("pass");        
+        dbpass = getServletContext().getInitParameter("pass");
     }
-    
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException  {
+            throws ServletException, IOException {
+            
         
-        HttpSession session = request.getSession();
-        String username = request.getParameter("username");
-        String password = request.getParameter("password");
-        String confirmpassword = request.getParameter("confirmpassword");
-        String role = request.getParameter("role");
+        // For reloading Attributes
+        String messagetype = (String) request.getAttribute("message-type");
+        String message = (String) request.getAttribute("message");
+        request.setAttribute("message-type", messagetype);
+        request.setAttribute("message", message);
         
+        if (message != null) {
+            System.out.println("0)" + request.getAttribute("message"));
+        }
+
         System.out.println("---------------------------------------------");
         try {
-            // Safety Protocols
-            System.out.println("1) Initializing Preliminary Safety Protocols...");
-            
-            if (!password.equals(confirmpassword)) {
-                System.out.println("-- Error: Passwords do not match!");
-                
-                request.setAttribute("message-type", "error");
-                request.setAttribute("message", "Passwords do not match!");
-                request.getRequestDispatcher("/app").forward(request, response);
-                return;
-            }
-            
-            
             // Load Driver & Establishing Connection
             Class.forName(driver);
-            System.out.println("2) Loaded Driver: " + driver);
-            Connection conn = DriverManager.getConnection(url, dbuser,dbpass);
-            System.out.println("3) Connected to: " + url);
+            System.out.println("1) Loaded Driver: " + driver);
+            Connection conn = DriverManager.getConnection(url, dbuser, dbpass);
+            System.out.println("2) Connected to: " + url);
 
-            // Delete User
-            String query = "INSERT INTO user_info VALUES (?, ?, ?)";
-            PreparedStatement insert = conn.prepareStatement(query);
-            insert.setString(1, username);
-            insert.setString(2, password);
-            insert.setString(3, role);
-            int rows = insert.executeUpdate();
- 
-            if (rows > 0) {
-                System.out.println("4) User " + username + " has been added successfully!");
-                
-                request.setAttribute("message-type", "success");
-                request.setAttribute("message", "User " + username + " has been added successfully!");
+            // Transfer data
+            Statement stmt = conn.createStatement();
+            String query = "SELECT * FROM user_info ORDER BY username ASC";
+            ResultSet rs = stmt.executeQuery(query);
+            System.out.println("3) Executed Query: " + query);
+
+            ArrayList<UserData> data = new ArrayList<UserData>();
+            System.out.println("4) Recording Queries...");
+
+            while (rs.next()) {
+                data.add(new UserData(rs.getString("username"), rs.getString("password"), rs.getString("role")));
             }
-            else {
-                System.out.println("-- Error: User already exists! ");
-                
-                request.setAttribute("message-type", "error");
-                request.setAttribute("message", "User already exists!");
+
+            for (UserData x : data) {
+                System.out.println("-\tUsername: " + x.getUsername() + "\t\tPassword: " + x.getPassword() + "\t\tRole: " + x.getRole());
             }
 
             // Close the connection
-            insert.close();
-            conn.close();           
-            request.getRequestDispatcher("/app").forward(request, response);
+            rs.close();
+            stmt.close();
+            conn.close();
+
+            System.out.println("5) Data recorded... Transferring data");
             
+            request.setAttribute("data", data);
+
+            // For ADVANCED FEATURES
+            request.getRequestDispatcher("success_advanced.jsp").forward(request, response);
+            System.out.println("6) Data transferred successfully!");
+
         } catch (SQLException | ClassNotFoundException sqle) {
             sqle.printStackTrace();
         }
