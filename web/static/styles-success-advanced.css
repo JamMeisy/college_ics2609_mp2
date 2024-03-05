@@ -3,13 +3,28 @@ Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to c
 Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
 */
 /* 
-    Created on : 02 25, 24, 5:38:29 PM
+    Created on : 03 5, 24, 10:18:53 PM
     Author     : Jam
 */
 
 @import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400&display=swap");
 
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-image: url(../assets/test.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    margin: 0;
+    padding: 0;
+    background-color: rgba(255, 255, 255, 0.85); 
+}
+
 header {
+    top: 0;
     background-color: rgba(0, 0, 0, 0.5);
     height: 56px;
     padding: 16px;
@@ -20,7 +35,6 @@ header {
     font-family: 'Plus Jakarta Sans', cursive;
     position: fixed;
     width: 100vw;
-    z-index: 1000; 
 }
 
 nav {
@@ -59,55 +73,38 @@ nav > * {
     margin-left: auto; 
 }
 
-body {
-    background-image: url(../assets/test.png);
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-attachment: fixed; 
-    margin: 0;
-    padding: 0;
-    background-color: rgba(255, 255, 255, 0.85); 
-}
-
-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-}
-
-.box {
-    max-width: 400px;
-    height: 400px;
-    margin: 10vh auto;
-    padding: 30px;
-    background-color: rgba(0, 0, 0, 0.5);
-    border-radius: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.2);
-    position: relative;
-    display: flex;
-    flex-direction: column;
-}
-
-.box h1,
-.box h2 {
-    text-align: center;
+body > section {
     color: white;
-    margin-bottom: 35px;
     font-family: 'Plus Jakarta Sans', cursive;
+    postion: relative;
+    margin: 20px auto;
+    border-radius: 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+}
+input {
+    color: black;
+}
+body > section:first-of-type {
+    margin-top: 10vh;
+}
+body > section:last-of-type {
+    margin-bottom: 10vh;
 }
 
-.box h1 {
-    font-size: 40px;
-    margin-top: 70px;
-    margin-bottom: 100px;
+/*
+#addForm, #updateForm, #deleteForm {
+    color: white;
+    font-family: 'Plus Jakarta Sans', cursive;
+    postion: relative;
+    display: flex;
+    flex-direction: column;
 }
+*/
 
-.box h2 {
-    font-size: 30px; /* Adjust the font size for h2 as needed */
-}
 
 .footer {
     background-color: rgba(0, 0, 0, 0.5);
@@ -123,7 +120,6 @@ section {
     bottom: 0;
     width: 100%;
     font-weight: bold;
-    z-index: 1000;
 }
 
 .hidden {
@@ -134,5 +130,3 @@ section {
     overflow: hidden;
     overflow-y: scroll;
 }
-
-

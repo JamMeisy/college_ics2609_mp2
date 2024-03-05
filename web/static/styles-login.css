@@ -7,34 +7,44 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     Author     : Jam
 */
 
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400&display=swap");
+
+body {
+    background-image: url(../assets/test.png);
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* Keep the background fixed while scrolling */
+    margin: 0;
+    padding: 0;
+    background-color: rgba(255, 255, 255, 0.85); /* White with 85% opacity */
+}
+
 header {
     background-color: rgba(0, 0, 0, 0.5);
     height: 56px;
-    padding: 16px;
-    font-size: 18px;
+    padding: 16px;   
     display: flex;
     align-items: center;
+    justify-content: center;
     font-family: 'Plus Jakarta Sans', cursive;
     position: fixed;
-    width: 100%;
-    top: 0;
+    width: 100vw;
     z-index: 1000;
 }
 
 nav {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding: 0 20px;
+    align-items: center;   
     color: white;
-    width: 100%;
+    width: 85vw;
 }
 
-.left-item,
-.right-item {
+.left-item,.right-item {
     display: flex;
     align-items: center;
-    margin: 0 18px 0 18px;
+    margin: 0 18px;
+    font-size: 18px;
 }
 
 .left-item img {
@@ -60,17 +70,6 @@ nav {
 
 body, label, input, button {
     font-size: 16px;
-}
-
-body {
-    background-image: url(../assets/test.png);
-    background-size: 100%;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-attachment: fixed; /* Keep the background fixed while scrolling */
-    margin: 0;
-    padding: 0;
-    background-color: rgba(255, 255, 255, 0.85); /* White with 85% opacity */
 }
 
 section {

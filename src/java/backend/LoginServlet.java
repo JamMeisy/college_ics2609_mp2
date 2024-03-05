@@ -1,4 +1,4 @@
-package test;
+package backend;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -13,23 +13,38 @@ import java.sql.*;
 
 public class LoginServlet extends HttpServlet {
     
-    String driver, url, dbuser, dbpass;
+    // Takes data from ServletConfig, NOT ServletContext
+    String driver, url, dbuser, dbpass, key, cipher;
+    Security sec;
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         driver = config.getInitParameter("driver");
         url = config.getInitParameter("url");
         dbuser = config.getInitParameter("user");
-        dbpass = config.getInitParameter("pass");        
+        dbpass = config.getInitParameter("pass");
+        
+        // ServletContext
+        key = getServletContext().getInitParameter("key");
+        cipher = getServletContext().getInitParameter("cipher");
+        sec = new Security(key, cipher);
     }
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException  {
         
+        System.out.println("---------------------------------------------");
+        
         HttpSession session = request.getSession();
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         
-        System.out.println("---------------------------------------------");
+        // Password is being encrypted
+        String encryptedPassword = sec.encrypt(password);       
+        System.out.println("0) Encrypting Password ");
+        System.out.println("-- Password: " + password);
+        System.out.println("-- Encrypted Password: " + encryptedPassword);
+        
+        
         try {
             // Load Driver & Establishing Connection
             Class.forName(driver);
@@ -43,9 +58,10 @@ public class LoginServlet extends HttpServlet {
             ResultSet rs = stmt.executeQuery(query);
             System.out.println("3) Executed Query: " + query);
                 
-            System.out.println("4) Verifying Login Credentials");     
+            System.out.println("4) Verifying Login Credentials");
+            
+            // Case 1: User is blank
             if (username.equals(""))
-                // User is blank
                 throw new NullPointerException();
             
             boolean userExists = false;
@@ -57,24 +73,26 @@ public class LoginServlet extends HttpServlet {
                 }
             }
             
+            // Case 2 & 3: User does not exist
             if (!userExists) {
-                // User not in DB
                 System.out.println("--- Username \"" + username + "\" does not exist");
                 System.out.println("--- Password = \"" + password + "\"");
+                
+                // Case 2: No Password
                 if (password.equals(""))
-                    // Pass is blank
                     throw new WrongUserNullPassException("Incorrect Username, Blank Password");
-                else
-                    // Pass is incorrect
+                // Case 3: Password is incorrect
+                else                  
                     throw new AuthenticationType2Exception("Incorrect Username, Incorrect Password");    
             }
             
             else {
                 System.out.println("--- Username \"" + username + "\" exists!");
-                String verify = rs.getString("password");
+                String encryptedVerify = rs.getString("password");
                 String role = rs.getString("role");
                 
-                if (!password.equals(verify))
+                // Case 4: Correct Username with Incorrect Password
+                if (encryptedPassword == null || !encryptedPassword.equals(encryptedVerify))
                     throw new AuthenticationType1Exception("Correct Username, Incorrect Password");
                
                 System.out.println("5) Verification Successful");
@@ -82,10 +100,8 @@ public class LoginServlet extends HttpServlet {
                 session.setAttribute("username", username);
                 session.setAttribute("role", role);
                 
-                response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-                response.setHeader("Pragma", "no-cache");
-                response.setDateHeader("Expires", 0);
-                
+                // Directly send to desired page with session attributes (no data transferred)
+                // Can be modified for ADVANCED
                 response.sendRedirect("success.jsp");   
             }
             
