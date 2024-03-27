@@ -12,88 +12,89 @@ import javax.servlet.http.*;
 import java.sql.*;
 
 public class LoginServlet extends HttpServlet {
-    
+
     String driver, url, dbuser, dbpass;
+
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         driver = config.getInitParameter("driver");
         url = config.getInitParameter("url");
         dbuser = config.getInitParameter("user");
-        dbpass = config.getInitParameter("pass");        
+        dbpass = config.getInitParameter("pass");
     }
-    
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException  {
-        
+            throws ServletException, IOException {
+
         HttpSession session = request.getSession();
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        
+        String userCaptcha = request.getParameter("captcha"); // Get user-inputted captcha
+
+        // Retrieve the generated CAPTCHA from the session
+        String generatedCaptcha = (String) session.getAttribute("captcha");
+
+        // Verify if the user-inputted captcha matches the generated captcha
+        if (generatedCaptcha == null || !generatedCaptcha.equals(userCaptcha)) {
+            // CAPTCHA mismatch or CAPTCHA verification failed
+            throw new CaptchaException("CAPTCHA verification failed");
+        }
+
         System.out.println("---------------------------------------------");
         try {
             // Load Driver & Establishing Connection
             Class.forName(driver);
             System.out.println("1) Loaded Driver: " + driver);
-            Connection conn = DriverManager.getConnection(url, dbuser,dbpass);
+            Connection conn = DriverManager.getConnection(url, dbuser, dbpass);
             System.out.println("2) Connected to: " + url);
-            
+
             // Login Verification
             Statement stmt = conn.createStatement();
-            String query = "SELECT * FROM user_info";
-            ResultSet rs = stmt.executeQuery(query);
+            String query = "SELECT * FROM user_info WHERE username = ?";
+            PreparedStatement pstmt = conn.prepareStatement(query);
+            pstmt.setString(1, username);
+            ResultSet rs = pstmt.executeQuery();
+
             System.out.println("3) Executed Query: " + query);
-                
-            System.out.println("4) Verifying Login Credentials");     
-            if (username.equals(""))
-                // User is blank
-                throw new NullPointerException();
-            
-            boolean userExists = false;
-            while (rs.next()) {
-                String checkUser = rs.getString("username");
-                if (username.equals(checkUser)) {
-                    userExists = true;
-                    break;
-                }
-            }
-            
-            if (!userExists) {
+
+            System.out.println("4) Verifying Login Credentials");
+
+            if (!rs.next()) {
                 // User not in DB
                 System.out.println("--- Username \"" + username + "\" does not exist");
-                System.out.println("--- Password = \"" + password + "\"");
-                if (password.equals(""))
-                    // Pass is blank
+                if (password.isEmpty()) {
+                    // Password is blank
                     throw new WrongUserNullPassException("Incorrect Username, Blank Password");
-                else
-                    // Pass is incorrect
-                    throw new AuthenticationType2Exception("Incorrect Username, Incorrect Password");    
+                } else {
+                    // Password is incorrect
+                    throw new AuthenticationType2Exception("Incorrect Username, Incorrect Password");
+                }
             }
-            
-            else {
-                System.out.println("--- Username \"" + username + "\" exists!");
-                String verify = rs.getString("password");
-                String role = rs.getString("role");
-                
-                if (!password.equals(verify))
-                    throw new AuthenticationType1Exception("Correct Username, Incorrect Password");
-               
-                System.out.println("5) Verification Successful");
-                
-                session.setAttribute("username", username);
-                session.setAttribute("role", role);
-                
-                response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-                response.setHeader("Pragma", "no-cache");
-                response.setDateHeader("Expires", 0);
-                
-                response.sendRedirect("success.jsp");   
+
+            String verify = rs.getString("password");
+            String role = rs.getString("role");
+
+            if (!password.equals(verify)) {
+                // Incorrect Password
+                throw new AuthenticationType1Exception("Correct Username, Incorrect Password");
             }
-            
+
+            System.out.println("5) Verification Successful");
+
+            session.setAttribute("username", username);
+            session.setAttribute("role", role);
+
+            response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+            response.setHeader("Pragma", "no-cache");
+            response.setDateHeader("Expires", 0);
+
+            response.sendRedirect("success.jsp");
+
             // Close the connection
             rs.close();
-            stmt.close();
+            pstmt.close();
             conn.close();
-            
+
         } catch (SQLException | ClassNotFoundException sqle) {
             sqle.printStackTrace();
         }
