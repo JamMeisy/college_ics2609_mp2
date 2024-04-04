@@ -103,42 +103,45 @@ input {
 }
 
 .button-container {
-    text-align: right;
+    display: flex;
+    justify-content: space-between; /* Space the buttons evenly */
+    align-items: center; /* Align items vertically */
+    margin-top: 35px; /* Push the container down */
+    text-align: center;
 }
 
-button {
+.refresh-button,
+.submit-button {
     background-color: #FFFFFF;
     color: rgba(0, 0, 0, 1);
     border: 0;
     border-radius: 20px;
-    margin-top: 30px; /* Push the button to the bottom */
-    margin-left: 250px; /* Adjust as needed */
     padding: 10px 30px;
     font-size: 12px;
     font-weight: bold;
     cursor: pointer;
-    opacity: 1;
-    visibility: visible;
-    -webkit-transition: all .3s ease;
+    transition: all .3s ease;
     font-family: 'Plus Jakarta Sans', cursive;
+    width: 25%; /* Set the width to fill the container */
+    margin-left: 35px;
+    margin-right: 35px;
 }
 
-button:hover {
-    transition: all .3s ease;
+.refresh-button:hover,
+.submit-button:hover {
     background-color: rgba(0, 0, 0, 0.5);
     color: #FFFFFF;
 }
 
+
 .login-box {
     max-width: 400px;
-    height: 400px;
+    height: 525px;
     margin: 10vh auto;
     padding: 30px;
     background-color: rgba(0, 0, 0, 0.5);
     border-radius: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.2);
-    position: relative;
-    display: flex;
     flex-direction: column;
 }
 
