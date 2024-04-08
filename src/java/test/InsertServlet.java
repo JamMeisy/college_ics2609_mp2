@@ -1,51 +1,36 @@
-package backend;
+package test;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
 
-
 import java.io.IOException;
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.sql.*;
 
-public class UpdateServlet extends HttpServlet {
+public class InsertServlet extends HttpServlet {
     
-    String driver, url, dbuser, dbpass, key, cipher;
-    Security sec;
+    String driver, url, dbuser, dbpass;
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         driver = getServletContext().getInitParameter("driver");
         url = getServletContext().getInitParameter("url");
         dbuser = getServletContext().getInitParameter("user");
-        dbpass = getServletContext().getInitParameter("pass");
-        key = getServletContext().getInitParameter("key");
-        cipher = getServletContext().getInitParameter("cipher");
-        sec = new Security(key, cipher);
+        dbpass = getServletContext().getInitParameter("pass");        
     }
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException  {
         
-        
-        
         HttpSession session = request.getSession();
         String username = request.getParameter("username");
         String password = request.getParameter("password");
         String confirmpassword = request.getParameter("confirmpassword");
-        String role = request.getParameter("role");             
+        String role = request.getParameter("role");
         
-        
-        
-        // Inserted password is being encrypted
-        String encryptedPassword = sec.encrypt(password);       
-        System.out.println("0) Encrypting Password ");
-        System.out.println("-- Password: " + password);
-        System.out.println("-- Encrypted Password: " + encryptedPassword);
-         
-        
+        System.out.println("---------------------------------------------");
         try {
             // Safety Protocols
             System.out.println("1) Initializing Preliminary Safety Protocols...");
@@ -58,14 +43,7 @@ public class UpdateServlet extends HttpServlet {
                 request.getRequestDispatcher("/app").forward(request, response);
                 return;
             }
-            if (session.getAttribute("username").equals(username) && role.equals("Guest")) {
-                System.out.println("-- Error: You cannot set your own role to a Guest!");
-                
-                request.setAttribute("message-type", "error");
-                request.setAttribute("message", "You cannot set your own role to a Guest!");
-                request.getRequestDispatcher("/app").forward(request, response);
-                return;
-            } 
+            
             
             // Load Driver & Establishing Connection
             Class.forName(driver);
@@ -74,28 +52,28 @@ public class UpdateServlet extends HttpServlet {
             System.out.println("3) Connected to: " + url);
 
             // Delete User
-            String query = "UPDATE user_info SET password=?, role=? WHERE username=?";
-            PreparedStatement update = conn.prepareStatement(query);    
-            update.setString(1, encryptedPassword);
-            update.setString(2, role);
-            update.setString(3, username);
-            int rows = update.executeUpdate();
+            String query = "INSERT INTO user_info VALUES (?, ?, ?)";
+            PreparedStatement insert = conn.prepareStatement(query);
+            insert.setString(1, username);
+            insert.setString(2, password);
+            insert.setString(3, role);
+            int rows = insert.executeUpdate();
  
             if (rows > 0) {
-                System.out.println("4) User " + username + " has been updated successfully!");
+                System.out.println("4) User " + username + " has been added successfully!");
                 
                 request.setAttribute("message-type", "success");
-                request.setAttribute("message", "User " + username + " has been updated successfully!");
+                request.setAttribute("message", "User " + username + " has been added successfully!");
             }
             else {
-                System.out.println("-- Error: Something went wrong! ");
+                System.out.println("-- Error: User already exists! ");
                 
                 request.setAttribute("message-type", "error");
-                request.setAttribute("message", "Something went wrong!");
+                request.setAttribute("message", "User already exists!");
             }
 
             // Close the connection
-            update.close();
+            insert.close();
             conn.close();           
             request.getRequestDispatcher("/app").forward(request, response);
             

@@ -8,8 +8,8 @@ package exceptions;
  *
  * @author Lejan Juico
  */
-public class CaptchaException extends RuntimeException {
-    public CaptchaException (String e) {
+public class WrongCaptchaException extends RuntimeException {
+    public WrongCaptchaException (String e) {
         super(e);
     }
 }

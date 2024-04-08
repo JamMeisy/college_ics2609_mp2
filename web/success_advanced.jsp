@@ -6,117 +6,72 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import = "exceptions.InvalidSessionException"%>
-<%@page import = "user.UserData"%>
-<%@page import = "backend.Security"%>
+<%@page import = "test.UserData"%>
 <%@page import = "java.util.ArrayList"%>
 
 <%
-    // Storing Data 
-    String username = (String) session.getAttribute("username");
-    String role = (String) session.getAttribute("role");
-    String header = (String) getServletContext().getInitParameter("Header");
-    String footer = (String) getServletContext().getInitParameter("Footer");
-    String message = (String) request.getAttribute("message");
-    String messageType = (String) request.getAttribute("message-type");
-    
-    System.out.println("-- Current User:" + username);
-    
-    /*
-    For now this serves as an easy way to add encrypted passwords
-
-    // Disable Caching
-    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); //HTTP 1.1 response.setHeader("Pragma", "no-cache"); // HTTP 1.0
-    response.setDateHeader("Expires", 0); // Proxies 
-    
-    // Verifying the Session
-    if (username == null || username.equals("")) {
-        throw new InvalidSessionException("Unauthorized Access");
-    }
-    // Nullifying session atttribute to logout when exited 
-    session.removeAttribute("username");
-    */
-    
-    username = "ADMIN";
-    role = "Admin";
-    
-    // Instantiating the collected data from UserDB
+    if (session.getAttribute("username") == null)
+        throw new InvalidSessionException("Attempting to access without authorization");
+%>
+<%
+    //Instantiating the collected data from UserDB
     ArrayList<UserData> data = (ArrayList<UserData>) request.getAttribute("data");
-    Security sec = new Security(getServletContext().getInitParameter("key"), getServletContext().getInitParameter("cipher"));
 %>
 
-<!-- Sources here should be blended with original -->
 <!DOCTYPE html>
 <html>
     <head>
         <title>Company DBMS</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="stylesheet" href="static/styles-success-advanced.css">
+        <link rel="stylesheet" href="static/styles-success.css">
         <script type="text/javascript" src="./admin.js"></script>
     </head>
     <body>
         <!-- Header -->
         <header>
             <nav>
-                <div class="left-item">
-                    <img src="<%= header %>" alt="logo" />
-                </div>
-                <div class="center-item">
-                    <a href="logout" class="logout-button">Logout</a>
-                </div>
-                <div class="right-item">
-                    <span class="header-text"><%= username %></span>
-                </div>
+                <img src="" alt="logo"/>
+                <a href="logout">
+                    <img src="" alt="logout">
+                </a>
             </nav>
         </header>
 
         <!-- Body -- Greeting Prompt -->
         <section>
-            <h1>Welcome <%= username %></h1>
-            <h2>Your role is: <%= role %></h2>      
+            <h1>Welcome <% out.print(session.getAttribute("username")); %></h1>
+            <h2>Your role is: <% out.print(session.getAttribute("role")); %></h2>      
         </section>
         
         <!-- Body -- Error / Success Message with Coded Color based on type-->
-        <% if (message != null) { %>
+        <% if (request.getAttribute("message") != null) { %>
             
         <section class="
-                 <%= (messageType.equals("success")) ? "success" : "error" %>"
-                 id = "message-box">    
+                 <% if (request.getAttribute("message-type").equals("success")) out.print("success"); else out.print("error"); %>"
+                 id = "message-box">
             
-            <h3><%= message %></h3>
             
-            <button type="button" onclick="removeMessage()">X</button>       
-            
+            <h3><% out.print(request.getAttribute("message")); %></h3>
+            <button type="button" onclick="removeMessage()">X</button>            
         </section>
         
         <% } %>
-        
         <!-- Body -- Display Database -->   
         <section>
             <div class="dbdisplay">
-                <table>
-                    <tr>
-                        <th>Username</th>
-                        <th>Password</th>
-                        <th>Role</th>
-                        <th>Decrypted (Not in DB)</th>
-                    </tr>
-                <%        
+                <%
                     for (UserData user : data) {
-                        out.print("<tr>");
-                        out.print("<td>" + user.getUsername() + "</td>");
-                        out.print("<td>" + user.getPassword() + "</td>");
-                        out.print("<td>" + user.getRole() + "</td>");
-                        out.print("<td>" + sec.decrypt(user.getPassword()) + "</td>");
-                        out.print("</tr>");
+                        out.print("<br>Username: " + user.getUsername());
+                        out.print("<br>Password: " + user.getPassword());
+                        out.print("<br>Role: " + user.getRole());
                     }
                 %>
-                </table>
             </div>
         </section>
-            
         <!-- Body -- Database Functions -->
-        <% if (role.equals("Admin")) { %>     
+        <% if (session.getAttribute("role").equals("Admin")) { %>
+        
         <section>
             <!-- DBMS functions -->
             <div id="optionsPrompt">
@@ -195,10 +150,9 @@
             </div>        
         </section>        
         <% } %>
-        
         <!-- Footer -->
-        <footer class="footer">
-            <%= footer %>
+        <footer>
+
         </footer>
     </body>
 </html>

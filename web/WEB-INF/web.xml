@@ -19,7 +19,7 @@
     
     <servlet>
         <servlet-name>Servlet1</servlet-name>
-        <servlet-class>backend.LoginServlet</servlet-class>
+        <servlet-class>test.LoginServlet</servlet-class>
         <!-- For ServletConfig of Login -->
         <init-param>
             <param-name>driver</param-name>
@@ -40,23 +40,23 @@
     </servlet>
     <servlet>
         <servlet-name>Servlet2</servlet-name>
-        <servlet-class>backend.LogoutServlet</servlet-class>
+        <servlet-class>test.LogoutServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Servlet3</servlet-name>
-        <servlet-class>backend.InsertServlet</servlet-class>
+        <servlet-class>test.InsertServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Servlet4</servlet-name>
-        <servlet-class>unused.UpdateServlet</servlet-class>
+        <servlet-class>test.UpdateServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Servlet5</servlet-name>
-        <servlet-class>backend.DeleteServlet</servlet-class>
+        <servlet-class>test.DeleteServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Servlet6</servlet-name>
-        <servlet-class>backend.AppServlet</servlet-class>
+        <servlet-class>test.AppServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Servlet7</servlet-name>
@@ -116,7 +116,7 @@
         <location>/error_session.jsp</location>
     </error-page>
     <error-page>
-        <exception-type>exceptions.CaptchaException</exception-type>
+        <exception-type>exceptions.WrongCaptchaException</exception-type>
         <location>/captcha_error.jsp</location>
     </error-page>      
     

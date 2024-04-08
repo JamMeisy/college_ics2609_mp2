@@ -14,7 +14,18 @@
         <link rel="stylesheet" href="static/styles-login.css">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400&display=swap">
 
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script>
+            $(document).ready(function () {
+                $('#captcha').on("paste", function (e) {
+                    e.preventDefault();
+                });
+
+                $('#generatedCaptcha').on("copy", function (e) {
+                    e.preventDefault();
+                });
+            });
+
             function refreshCaptcha() {
                 var xhr = new XMLHttpRequest();
                 xhr.onreadystatechange = function () {
@@ -32,7 +43,6 @@
 
             window.addEventListener("pageshow", onPageShow);
         </script>
-
     </head>
     <body>
         <!-- Header -->
@@ -59,10 +69,10 @@
                     <input type="password" name="password" id="password">
 
                     <label for="generatedCaptcha">Generated CAPTCHA</label>
-                    <input type="text" name="generatedCaptcha" id="generatedCaptcha" readonly onfocus="this.blur()" style="-webkit-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none;">
+                    <input type="text" name="generatedCaptcha" id="generatedCaptcha" readonly onfocus="this.blur()">
 
                     <label for="captcha">CAPTCHA:</label>
-                    <input type="text" name="captcha" id="captcha" oncopy="return false;">
+                    <input type="text" name="captcha" id="captcha" onpaste="return false;">
 
                     <div class="button-container">
                         <button type="button" onclick="refreshCaptcha()" class="refresh-button">&#8635;</button>
@@ -78,3 +88,4 @@
         </footer>
     </body>
 </html>
+

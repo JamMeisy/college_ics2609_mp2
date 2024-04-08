@@ -1,4 +1,4 @@
-package backend;
+package test;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -12,16 +12,14 @@ import javax.servlet.http.*;
 public class LogoutServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         
-        System.out.println("---------------------------------------------");
-        
         HttpSession session = request.getSession();
-        session.removeAttribute("username");
-        session.invalidate();
+        session.invalidate(); 
+        response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        response.setHeader("Pragma", "no-cache");
+        response.setDateHeader("Expires", 0);
         response.sendRedirect("./"); 
-        
+
         System.out.println("-- Invalidated previous session, Starting new session --");
-        
-        System.out.println("---------------------------------------------");
         
     }
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

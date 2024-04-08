@@ -7,8 +7,6 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
     Author     : Jam
 */
 
-@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400&display=swap");
-
 header {
     background-color: rgba(0, 0, 0, 0.5);
     height: 56px;
@@ -16,10 +14,10 @@ header {
     font-size: 18px;
     display: flex;
     align-items: center;
-    justify-content: center;
     font-family: 'Plus Jakarta Sans', cursive;
     position: fixed;
     width: 100%;
+    top: 0;
     z-index: 1000;
 }
 
@@ -29,14 +27,14 @@ nav {
     align-items: center;
     padding: 0 20px;
     color: white;
-    width: 80%;
+    width: 100%;
 }
 
 .left-item,
 .right-item {
     display: flex;
     align-items: center;
-    margin: 0 18px;
+    margin: 0 18px 0 18px;
 }
 
 .left-item img {
@@ -51,7 +49,7 @@ nav {
 
 body {
     background-image: url(../assets/test.png);
-    background-size: cover;
+    background-size: 100%;
     background-repeat: no-repeat;
     background-position: center;
     background-attachment: fixed; /* Keep the background fixed while scrolling */

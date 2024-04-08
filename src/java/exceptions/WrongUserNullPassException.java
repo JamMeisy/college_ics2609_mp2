@@ -16,3 +16,4 @@ public class WrongUserNullPassException extends RuntimeException {
         super(e);
     }
 }
+
