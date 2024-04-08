@@ -4,6 +4,7 @@ package backend;
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
  */
+
 import exceptions.*;
 import java.io.IOException;
 import javax.servlet.*;
@@ -11,87 +12,104 @@ import javax.servlet.http.*;
 import java.sql.*;
 
 public class LoginServlet extends HttpServlet {
-
-    String driver, url, dbuser, dbpass;
-
+    
+    // Takes data from ServletConfig, NOT ServletContext
+    String driver, url, dbuser, dbpass, key, cipher;
+    Security sec;
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         driver = config.getInitParameter("driver");
         url = config.getInitParameter("url");
         dbuser = config.getInitParameter("user");
         dbpass = config.getInitParameter("pass");
+        
+        // ServletContext
+        key = getServletContext().getInitParameter("key");
+        cipher = getServletContext().getInitParameter("cipher");
+        sec = new Security(key, cipher);
     }
-
+    
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-
+            throws ServletException, IOException  {
+        
+        System.out.println("---------------------------------------------");
+        
         HttpSession session = request.getSession();
         String username = request.getParameter("username");
         String password = request.getParameter("password");
-        String userCaptcha = request.getParameter("captcha");
-        String generatedCaptcha = (String) session.getAttribute("captcha");
-
-        System.out.println("---------------------------------------------");
+        
+        // Password is being encrypted
+        String encryptedPassword = sec.encrypt(password);       
+        System.out.println("0) Encrypting Password ");
+        System.out.println("-- Password: " + password);
+        System.out.println("-- Encrypted Password: " + encryptedPassword);
+        
+        
         try {
             // Load Driver & Establishing Connection
             Class.forName(driver);
             System.out.println("1) Loaded Driver: " + driver);
-            Connection conn = DriverManager.getConnection(url, dbuser, dbpass);
+            Connection conn = DriverManager.getConnection(url, dbuser,dbpass);
             System.out.println("2) Connected to: " + url);
-
+            
             // Login Verification
             Statement stmt = conn.createStatement();
-            String query = "SELECT * FROM user_info WHERE username = ?";
-            PreparedStatement pstmt = conn.prepareStatement(query);
-            pstmt.setString(1, username);
-            ResultSet rs = pstmt.executeQuery();
-
+            String query = "SELECT * FROM user_info";
+            ResultSet rs = stmt.executeQuery(query);
             System.out.println("3) Executed Query: " + query);
-
+                
             System.out.println("4) Verifying Login Credentials");
-
-            if (!rs.next()) {
-                // User not in DB
-                System.out.println("--- Username \"" + username + "\" does not exist");
-                if (password.isEmpty()) {
-                    // Password is blank
-                    throw new WrongUserNullPassException("Incorrect Username, Blank Password");
-                } else {
-                    // Password is incorrect
-                    throw new AuthenticationType2Exception("Incorrect Username, Incorrect Password");
+            
+            // Case 1: User is blank
+            if (username.equals(""))
+                throw new NullPointerException();
+            
+            boolean userExists = false;
+            while (rs.next()) {
+                String checkUser = rs.getString("username");
+                if (username.equals(checkUser)) {
+                    userExists = true;
+                    break;
                 }
             }
-
-            String verify = rs.getString("password");
-            String role = rs.getString("role");
-
-            if (!password.equals(verify)) {
-                // Incorrect Password
-                throw new AuthenticationType1Exception("Correct Username, Incorrect Password");
-            }
-
-            System.out.println("5) Verification Successful");
-
-            if (generatedCaptcha == null || !generatedCaptcha.equals(userCaptcha)) {
-                throw new WrongCaptchaException("CAPTCHA verification failed");
+            
+            // Case 2 & 3: User does not exist
+            if (!userExists) {
+                System.out.println("--- Username \"" + username + "\" does not exist");
+                System.out.println("--- Password = \"" + password + "\"");
+                
+                // Case 2: No Password
+                if (password.equals(""))
+                    throw new WrongUserNullPassException("Incorrect Username, Blank Password");
+                // Case 3: Password is incorrect
+                else                  
+                    throw new AuthenticationType2Exception("Incorrect Username, Incorrect Password");    
             }
             
-            System.out.println("6) Captcha Verification Successful");
+            else {
+                System.out.println("--- Username \"" + username + "\" exists!");
+                String encryptedVerify = rs.getString("password");
+                String role = rs.getString("role");
+                
+                // Case 4: Correct Username with Incorrect Password
+                if (encryptedPassword == null || !encryptedPassword.equals(encryptedVerify))
+                    throw new AuthenticationType1Exception("Correct Username, Incorrect Password");
+               
+                System.out.println("5) Verification Successful");
+                
+                session.setAttribute("username", username);
+                session.setAttribute("role", role);
+                
+                // Directly send to desired page with session attributes (no data transferred)
+                // Can be modified for ADVANCED
+                response.sendRedirect("success.jsp");   
+            }
             
-            session.setAttribute("username", username);
-            session.setAttribute("role", role);
-
-            response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-            response.setHeader("Pragma", "no-cache");
-            response.setDateHeader("Expires", 0);
-
-            response.sendRedirect("success.jsp");
-
             // Close the connection
             rs.close();
-            pstmt.close();
+            stmt.close();
             conn.close();
-
+            
         } catch (SQLException | ClassNotFoundException sqle) {
             sqle.printStackTrace();
         }
