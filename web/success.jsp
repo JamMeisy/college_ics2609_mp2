@@ -6,7 +6,7 @@
 
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@page import = "exceptions.InvalidSessionException"%>
-<%@page import = "test.UserData"%>
+<%@page import = "user.UserData"%>
 <%@page import = "java.util.ArrayList"%>
 
 <%   

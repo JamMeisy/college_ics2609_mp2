@@ -16,10 +16,9 @@
         <param-name>cipher</param-name>
         <param-value>AES/ECB/PKCS5Padding</param-value>
     </context-param>
-    
     <servlet>
         <servlet-name>Servlet1</servlet-name>
-        <servlet-class>test.LoginServlet</servlet-class>
+        <servlet-class>backend.LoginServlet</servlet-class>
         <!-- For ServletConfig of Login -->
         <init-param>
             <param-name>driver</param-name>
@@ -40,27 +39,27 @@
     </servlet>
     <servlet>
         <servlet-name>Servlet2</servlet-name>
-        <servlet-class>test.LogoutServlet</servlet-class>
+        <servlet-class>backend.LogoutServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Servlet3</servlet-name>
-        <servlet-class>test.InsertServlet</servlet-class>
+        <servlet-class>backend.InsertServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Servlet4</servlet-name>
-        <servlet-class>test.UpdateServlet</servlet-class>
+        <servlet-class>backend.UpdateServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Servlet5</servlet-name>
-        <servlet-class>test.DeleteServlet</servlet-class>
+        <servlet-class>backend.DeleteServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Servlet6</servlet-name>
-        <servlet-class>test.AppServlet</servlet-class>
+        <servlet-class>backend.AppServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Servlet7</servlet-name>
-        <servlet-class>test.CaptchaServlet</servlet-class>
+        <servlet-class>backend.CaptchaServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Servlet1</servlet-name>
@@ -90,7 +89,6 @@
         <servlet-name>Servlet7</servlet-name>
         <url-pattern>/CaptchaServlet</url-pattern>
     </servlet-mapping>
-    
     <error-page>
         <exception-type>java.lang.NullPointerException</exception-type>
         <location>/error_nologin.jsp</location>
@@ -118,8 +116,7 @@
     <error-page>
         <exception-type>exceptions.WrongCaptchaException</exception-type>
         <location>/captcha_error.jsp</location>
-    </error-page>      
-    
+    </error-page>
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
     </welcome-file-list>

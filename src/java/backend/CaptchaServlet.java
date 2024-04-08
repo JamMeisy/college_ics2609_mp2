@@ -1,4 +1,4 @@
-package test;
+package backend;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
