@@ -12,17 +12,23 @@ import java.sql.*;
 
 public class InsertServlet extends HttpServlet {
     
-    String driver, url, dbuser, dbpass;
+    String driver, url, dbuser, dbpass, key, cipher;
+    Security sec;
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         driver = getServletContext().getInitParameter("driver");
         url = getServletContext().getInitParameter("url");
         dbuser = getServletContext().getInitParameter("user");
-        dbpass = getServletContext().getInitParameter("pass");        
+        dbpass = getServletContext().getInitParameter("pass");
+        key = getServletContext().getInitParameter("key");
+        cipher = getServletContext().getInitParameter("cipher");
+        sec = new Security(key, cipher);
     }
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException  {
+        
+        System.out.println("---------------------------------------------");
         
         HttpSession session = request.getSession();
         String username = request.getParameter("username");
@@ -30,7 +36,12 @@ public class InsertServlet extends HttpServlet {
         String confirmpassword = request.getParameter("confirmpassword");
         String role = request.getParameter("role");
         
-        System.out.println("---------------------------------------------");
+        // Inserted password is being encrypted
+        String encryptedPassword =  sec.encrypt(password);       
+        System.out.println("0) Encrypting Password ");
+        System.out.println("-- Password: " + password);
+        System.out.println("-- Encrypted Password: " + encryptedPassword);
+               
         try {
             // Safety Protocols
             System.out.println("1) Initializing Preliminary Safety Protocols...");
@@ -50,12 +61,12 @@ public class InsertServlet extends HttpServlet {
             System.out.println("2) Loaded Driver: " + driver);
             Connection conn = DriverManager.getConnection(url, dbuser,dbpass);
             System.out.println("3) Connected to: " + url);
-
+     
             // Delete User
             String query = "INSERT INTO user_info VALUES (?, ?, ?)";
             PreparedStatement insert = conn.prepareStatement(query);
             insert.setString(1, username);
-            insert.setString(2, password);
+            insert.setString(2, encryptedPassword);
             insert.setString(3, role);
             int rows = insert.executeUpdate();
  

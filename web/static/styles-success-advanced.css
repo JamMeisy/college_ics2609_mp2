@@ -1,0 +1,132 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* 
+    Created on : 03 5, 24, 10:18:53 PM
+    Author     : Jam
+*/
+
+@import url("https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400&display=swap");
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-image: url(../assets/test.png);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    margin: 0;
+    padding: 0;
+    background-color: rgba(255, 255, 255, 0.85); 
+}
+
+header {
+    top: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    height: 56px;
+    padding: 16px;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Plus Jakarta Sans', cursive;
+    position: fixed;
+    width: 100vw;
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0px 18px;
+    color: white;
+    width: 80%;
+}
+
+nav > * {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.left-item img {
+    width: 50px; 
+    height: auto; 
+}
+
+.logout-button {
+    color: white;
+    font-family: 'Plus Jakarta Sans', cursive;
+    text-decoration: none; 
+    transition: color 0.3s; 
+}
+
+.logout-button:hover {
+    color: rgba(0, 0, 0, 0.7); 
+}
+
+.header-text {
+    order: 1;
+    margin-left: auto; 
+}
+
+body > section {
+    color: white;
+    font-family: 'Plus Jakarta Sans', cursive;
+    postion: relative;
+    margin: 20px auto;
+    border-radius: 20px;
+    background-color: rgba(0, 0, 0, 0.5);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1), 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+}
+input {
+    color: black;
+}
+body > section:first-of-type {
+    margin-top: 10vh;
+}
+body > section:last-of-type {
+    margin-bottom: 10vh;
+}
+
+/*
+#addForm, #updateForm, #deleteForm {
+    color: white;
+    font-family: 'Plus Jakarta Sans', cursive;
+    postion: relative;
+    display: flex;
+    flex-direction: column;
+}
+*/
+
+
+.footer {
+    background-color: rgba(0, 0, 0, 0.5);
+    height: 56px;
+    padding: 16px;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Plus Jakarta Sans', cursive;
+    color: white;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    font-weight: bold;
+}
+
+.hidden {
+    display: none;
+}
+
+.dbdisplay {
+    overflow: hidden;
+    overflow-y: scroll;
+}

@@ -13,17 +13,23 @@ import java.sql.*;
 
 public class UpdateServlet extends HttpServlet {
     
-    String driver, url, dbuser, dbpass;
+    String driver, url, dbuser, dbpass, key, cipher;
+    Security sec;
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         driver = getServletContext().getInitParameter("driver");
         url = getServletContext().getInitParameter("url");
         dbuser = getServletContext().getInitParameter("user");
-        dbpass = getServletContext().getInitParameter("pass");        
+        dbpass = getServletContext().getInitParameter("pass");
+        key = getServletContext().getInitParameter("key");
+        cipher = getServletContext().getInitParameter("cipher");
+        sec = new Security(key, cipher);
     }
     
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException  {
+        
+        
         
         HttpSession session = request.getSession();
         String username = request.getParameter("username");
@@ -31,7 +37,15 @@ public class UpdateServlet extends HttpServlet {
         String confirmpassword = request.getParameter("confirmpassword");
         String role = request.getParameter("role");             
         
-        System.out.println("---------------------------------------------");
+        
+        
+        // Inserted password is being encrypted
+        String encryptedPassword = sec.encrypt(password);       
+        System.out.println("0) Encrypting Password ");
+        System.out.println("-- Password: " + password);
+        System.out.println("-- Encrypted Password: " + encryptedPassword);
+         
+        
         try {
             // Safety Protocols
             System.out.println("1) Initializing Preliminary Safety Protocols...");
@@ -62,7 +76,7 @@ public class UpdateServlet extends HttpServlet {
             // Delete User
             String query = "UPDATE user_info SET password=?, role=? WHERE username=?";
             PreparedStatement update = conn.prepareStatement(query);    
-            update.setString(1, password);
+            update.setString(1, encryptedPassword);
             update.setString(2, role);
             update.setString(3, username);
             int rows = update.executeUpdate();
