@@ -37,6 +37,8 @@ public class LoginServlet extends HttpServlet {
         HttpSession session = request.getSession();
         String username = request.getParameter("username");
         String password = request.getParameter("password");
+        String userCaptcha = request.getParameter("captcha");
+        String generatedCaptcha = (String) session.getAttribute("captcha");
         
         // Password is being encrypted
         String encryptedPassword = sec.encrypt(password);       
@@ -86,24 +88,29 @@ public class LoginServlet extends HttpServlet {
                     throw new AuthenticationType2Exception("Incorrect Username, Incorrect Password");    
             }
             
-            else {
-                System.out.println("--- Username \"" + username + "\" exists!");
-                String encryptedVerify = rs.getString("password");
-                String role = rs.getString("role");
+            System.out.println("--- Username \"" + username + "\" exists!");
+            String encryptedVerify = rs.getString("password");
+            String role = rs.getString("role");
                 
-                // Case 4: Correct Username with Incorrect Password
-                if (encryptedPassword == null || !encryptedPassword.equals(encryptedVerify))
-                    throw new AuthenticationType1Exception("Correct Username, Incorrect Password");
+            // Case 4: Correct Username with Incorrect Password
+            if (encryptedPassword == null || !encryptedPassword.equals(encryptedVerify))
+                throw new AuthenticationType1Exception("Correct Username, Incorrect Password");
                
-                System.out.println("5) Verification Successful");
-                
-                session.setAttribute("username", username);
-                session.setAttribute("role", role);
-                
-                // Directly send to desired page with session attributes (no data transferred)
-                // Can be modified for ADVANCED
-                response.sendRedirect("success.jsp");   
+            System.out.println("5) Verification Successful");
+
+            // Case 5: Captcha Failed
+            if (generatedCaptcha == null || !generatedCaptcha.equals(userCaptcha)) {
+                throw new WrongCaptchaException("CAPTCHA verification failed");
             }
+
+            System.out.println("6) Captcha Verification Successful");
+                
+            session.setAttribute("username", username);
+            session.setAttribute("role", role);
+                
+            // Directly send to desired page with session attributes (no data transferred)
+            // Can be modified for success_advanced.jsp via /app
+            response.sendRedirect("success.jsp");   
             
             // Close the connection
             rs.close();

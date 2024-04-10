@@ -12,7 +12,8 @@ public class CaptchaServlet extends HttpServlet {
         response.setContentType("text/plain");
 
         // Create a CAPTCHA string
-        String captcha = generateCaptcha(8); // Set the length of the CAPTCHA string as needed
+        // Set the length of the CAPTCHA string as needed
+        String captcha = generateCaptcha(8); 
 
         // Store the CAPTCHA string in the session for later verification
         HttpSession session = request.getSession();

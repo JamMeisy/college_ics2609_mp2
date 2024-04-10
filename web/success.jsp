@@ -16,6 +16,7 @@
     if (username == null || username.equals("")) {
         throw new InvalidSessionException("Unauthorized Access");
     }
+    
     // Nullifying session atttribute to logout when exited 
     session.removeAttribute("username");
 %>

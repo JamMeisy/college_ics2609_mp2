@@ -33,7 +33,7 @@
                         document.getElementById('generatedCaptcha').value = xhr.responseText;
                     }
                 };
-                xhr.open("GET", "CaptchaServlet", true);
+                xhr.open("GET", "captcha", true);
                 xhr.send();
             }
 
