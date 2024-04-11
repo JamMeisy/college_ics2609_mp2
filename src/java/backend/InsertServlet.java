@@ -43,7 +43,8 @@ public class InsertServlet extends HttpServlet {
         System.out.println("-- Encrypted Password: " + encryptedPassword);
                
         try {
-            // Safety Protocols
+            // Safety Protocols (not used at the moemnt)
+            /*
             System.out.println("1) Initializing Preliminary Safety Protocols...");
             
             if (!password.equals(confirmpassword)) {
@@ -54,6 +55,7 @@ public class InsertServlet extends HttpServlet {
                 request.getRequestDispatcher("/app").forward(request, response);
                 return;
             }
+            */
             
             
             // Load Driver & Establishing Connection

@@ -85,9 +85,7 @@ body > section {
     flex-direction: column;
     padding: 30px;
 }
-input {
-    color: black;
-}
+
 body > section:first-of-type {
     margin-top: 10vh;
 }
@@ -95,7 +93,6 @@ body > section:last-of-type {
     margin-bottom: 10vh;
 }
 
-/*
 #addForm, #updateForm, #deleteForm {
     color: white;
     font-family: 'Plus Jakarta Sans', cursive;
@@ -103,8 +100,9 @@ body > section:last-of-type {
     display: flex;
     flex-direction: column;
 }
-*/
-
+input {
+    color: black;
+}
 
 .footer {
     background-color: rgba(0, 0, 0, 0.5);

@@ -78,8 +78,6 @@
                         <button type="button" onclick="refreshCaptcha()" class="refresh-button">&#8635;</button>
                         <button type="submit" class="submit-button">Submit</button>
                     </div>
-
-                    <button type="submit">Submit</button>
                 </form>
             </div>
         </section>

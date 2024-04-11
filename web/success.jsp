@@ -40,7 +40,7 @@
                     <a href="logout" class="logout-button">Logout</a>
                 </div>
                 <div class="right-item">
-                    <span class="header-text"><%= username%></span>
+                    <span class="header-text"><%= username %></span>
                 </div>
             </nav>
         </header>
@@ -48,10 +48,10 @@
         <!-- Body -- Greeting Prompt -->
         <section>
             <div class="box">
-                <h1>Welcome <%= username%></h1>
-                <h2>Your role is: <%= role%></h2>
+                <h1>Welcome <%= username %></h1>
+                <h2>Your role is: <%= role %></h2>
             </div>
         </section>
-        <footer class="footer"><%= footer%></footer>
+        <footer class="footer"><%= footer %></footer>
     </body>
 </html>

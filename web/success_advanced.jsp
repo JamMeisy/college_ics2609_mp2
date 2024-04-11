@@ -21,9 +21,8 @@
     
     System.out.println("-- Current User:" + username);
     
+    //For now this serves as an easy way to add encrypted passwords
     /*
-    For now this serves as an easy way to add encrypted passwords
-
     // Disable Caching
     response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate"); //HTTP 1.1 response.setHeader("Pragma", "no-cache"); // HTTP 1.0
     response.setDateHeader("Expires", 0); // Proxies 
@@ -36,8 +35,8 @@
     session.removeAttribute("username");
     */
     
-    username = "ADMIN";
-    role = "Admin";
+    username = "ADMIN CONSOLE";
+    role = "Console";
     
     // Instantiating the collected data from UserDB
     ArrayList<UserData> data = (ArrayList<UserData>) request.getAttribute("data");
@@ -71,6 +70,7 @@
         </header>
 
         <!-- Body -- Greeting Prompt -->
+        <div>
         <section>
             <h1>Welcome <%= username %></h1>
             <h2>Your role is: <%= role %></h2>      
@@ -91,6 +91,7 @@
         
         <% } %>
         
+        <% if (role.equals("Console")) { %> 
         <!-- Body -- Display Database -->   
         <section>
             <div class="dbdisplay">
@@ -114,9 +115,9 @@
                 </table>
             </div>
         </section>
-            
-        <!-- Body -- Database Functions -->
-        <% if (role.equals("Admin")) { %>     
+        </div>   
+                
+        <!-- Body -- Database Functions -->     
         <section>
             <!-- DBMS functions -->
             <div id="optionsPrompt">

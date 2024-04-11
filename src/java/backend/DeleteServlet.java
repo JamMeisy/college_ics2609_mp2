@@ -30,7 +30,8 @@ public class DeleteServlet extends HttpServlet {
         String username = request.getParameter("username");
         
         try {
-            // Safety Protocols
+            // Safety Protocols (not used at the moment)
+            /*
             System.out.println("1) Initializing Preliminary Safety Protocols...");
             
             if (username.equals(session.getAttribute("username"))) {
@@ -41,6 +42,7 @@ public class DeleteServlet extends HttpServlet {
                 request.getRequestDispatcher("/app").forward(request, response);
                 return;
             }
+            */
             
             // Load Driver & Establishing Connection
             Class.forName(driver);

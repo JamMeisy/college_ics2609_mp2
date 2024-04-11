@@ -47,7 +47,8 @@ public class UpdateServlet extends HttpServlet {
          
         
         try {
-            // Safety Protocols
+            // Safety Protocols (Not used at the moment)
+            /* 
             System.out.println("1) Initializing Preliminary Safety Protocols...");
             
             if (!password.equals(confirmpassword)) {
@@ -65,7 +66,8 @@ public class UpdateServlet extends HttpServlet {
                 request.setAttribute("message", "You cannot set your own role to a Guest!");
                 request.getRequestDispatcher("/app").forward(request, response);
                 return;
-            } 
+            }
+            */
             
             // Load Driver & Establishing Connection
             Class.forName(driver);
