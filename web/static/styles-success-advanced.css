@@ -11,16 +11,26 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 
 body {
     display: flex;
-    flex-direction: column;
     align-items: center;
+    justify-content: center;
     background-image: url(../assets/test.png);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
     background-attachment: fixed;
-    margin: 0;
+    margin: 10vh 0;
     padding: 0;
-    background-color: rgba(255, 255, 255, 0.85); 
+    background-color: rgba(255, 255, 255, 0.85);
+}
+.content {
+    display: flex;
+    padding: 0 2vw;
+    justify-content: space-evenly;
+}
+
+.dbmsfunctions {
+    margin-left: 10px;
+    max-width: 400px;
 }
 
 header {
@@ -73,10 +83,9 @@ nav > * {
     margin-left: auto; 
 }
 
-body > section {
+section {
     color: white;
     font-family: 'Plus Jakarta Sans', cursive;
-    postion: relative;
     margin: 20px auto;
     border-radius: 20px;
     background-color: rgba(0, 0, 0, 0.5);
@@ -84,13 +93,6 @@ body > section {
     display: flex;
     flex-direction: column;
     padding: 30px;
-}
-
-body > section:first-of-type {
-    margin-top: 10vh;
-}
-body > section:last-of-type {
-    margin-bottom: 10vh;
 }
 
 #addForm, #updateForm, #deleteForm {

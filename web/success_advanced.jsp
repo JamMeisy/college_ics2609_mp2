@@ -70,55 +70,53 @@
         </header>
 
         <!-- Body -- Greeting Prompt -->
+        <div class="content">
         <div>
-        <section>
-            <h1>Welcome <%= username %></h1>
-            <h2>Your role is: <%= role %></h2>      
-        </section>
-        
-        <!-- Body -- Error / Success Message with Coded Color based on type-->
-        <% if (message != null) { %>
-            
-        <section class="
-                 <%= (messageType.equals("success")) ? "success" : "error" %>"
-                 id = "message-box">    
-            
-            <h3><%= message %></h3>
-            
-            <button type="button" onclick="removeMessage()">X</button>       
-            
-        </section>
-        
-        <% } %>
-        
-        <% if (role.equals("Console")) { %> 
-        <!-- Body -- Display Database -->   
-        <section>
-            <div class="dbdisplay">
-                <table>
-                    <tr>
-                        <th>Username</th>
-                        <th>Password</th>
-                        <th>Role</th>
-                        <th>Decrypted (Not in DB)</th>
-                    </tr>
-                <%        
-                    for (UserData user : data) {
-                        out.print("<tr>");
-                        out.print("<td>" + user.getUsername() + "</td>");
-                        out.print("<td>" + user.getPassword() + "</td>");
-                        out.print("<td>" + user.getRole() + "</td>");
-                        out.print("<td>" + sec.decrypt(user.getPassword()) + "</td>");
-                        out.print("</tr>");
-                    }
-                %>
-                </table>
-            </div>
-        </section>
+            <section>
+                <h1>Welcome <%= username %></h1>
+                <h2>Your role is: <%= role %></h2>      
+            </section>
+
+            <% if (role.equals("Console")) { %> 
+            <!-- Body -- Display Database -->   
+            <section>
+                <div class="dbdisplay">
+                    <table>
+                        <tr>
+                            <th>Username</th>
+                            <th>Password</th>
+                            <th>Role</th>
+                            <th>Decrypted</th>
+                        </tr>
+                    <%        
+                        for (UserData user : data) {
+                            out.print("<tr>");
+                            out.print("<td>" + user.getUsername() + "</td>");
+                            out.print("<td>" + user.getPassword() + "</td>");
+                            out.print("<td>" + user.getRole() + "</td>");
+                            out.print("<td>" + sec.decrypt(user.getPassword()) + "</td>");
+                            out.print("</tr>");
+                        }
+                    %>
+                    </table>
+                </div>
+            </section>
         </div>   
                 
         <!-- Body -- Database Functions -->     
-        <section>
+        <section class="dbmsfunctions">
+             <!-- Body -- Error / Success Message with Coded Color based on type-->
+            <% if (message != null) { %>
+                <div class="
+                         <%= (messageType.equals("success")) ? "success" : "error" %>"
+                         id = "message-box">    
+
+                    <h3><%= message %></h3>
+                    <button type="button" onclick="removeMessage()">X</button>       
+                </div>
+            <% } %>
+            
+            
             <!-- DBMS functions -->
             <div id="optionsPrompt">
                 <button onclick="addPrompt()">Add</button>
@@ -139,10 +137,12 @@
                     <input type="password" name="confirmpassword" id="add-confirmpassword" required>
 
                     Role:
-                    <input type="radio" name="role" id="add-roleAdmin" value="Admin" required>
-                    <label for="add-roleAdmin">Admin</label>
-                    <input type="radio" name="role" id="add-roleGuest" value="Guest" required>
-                    <label for="add-roleGuest">Guest</label>
+                    <div class="role-selection">
+                        <input type="radio" name="role" id="add-roleAdmin" value="Admin" required>
+                        <label for="add-roleAdmin">Admin</label>
+                        <input type="radio" name="role" id="add-roleGuest" value="Guest" required>
+                        <label for="add-roleGuest">Guest</label>
+                    </div>
                     
                     <button type="button" onclick="cancel()">Cancel</button>
                     <button type="submit" form="addForm">Submit</button>
@@ -168,11 +168,12 @@
                     <input type="password" name="confirmpassword" id="update-confirmpassword" required>
                     
                     Role:
-                    <input type="radio" name="role" id="update-roleAdmin" value="Admin" required>
-                    <label for="update-roleAdmin">Admin</label>
-                    <input type="radio" name="role" id="update-roleGuest" value="Guest" required>
-                    <label for="update-roleGuest">Guest</label>
-
+                    <div class="role-selection">
+                        <input type="radio" name="role" id="update-roleAdmin" value="Admin" required>
+                        <label for="update-roleAdmin">Admin</label>
+                        <input type="radio" name="role" id="update-roleGuest" value="Guest" required>
+                        <label for="update-roleGuest">Guest</label>
+                    </div>    
                     <button type="button" onclick="cancel()">Cancel</button>
                     <button type="submit" form="updateForm">Submit</button>
                 </form>
@@ -196,7 +197,7 @@
             </div>        
         </section>        
         <% } %>
-        
+        </div>
         <!-- Footer -->
         <footer class="footer">
             <%= footer %>
