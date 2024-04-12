@@ -51,7 +51,22 @@
                 <h1>Welcome <%= username %></h1>
                 <h2>Your role is: <%= role %></h2>
             </div>
+            <input type="hidden" name="username" value="<%= username %>">
+            <input type="hidden" name="role" value="<%= role %>">
+            <!-- Generate Report or Retrieve Credentials -->  
+            <button onclick="generate()" type="button">
+                <% 
+                    if (role == "Admin")
+                        out.println("Generate Report");
+                    else
+                        out.println("Retrieve Credentials");
+                %>
+            </button>
+            
         </section>
+            
+         
+            
         <footer class="footer"><%= footer %></footer>
     </body>
 </html>
