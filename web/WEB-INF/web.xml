@@ -6,7 +6,7 @@
     </context-param>
     <context-param>
         <param-name>Footer</param-name>
-        <param-value>Juico | Tan - Machine Problem #2 (ICS2609)</param-value>
+        <param-value>Juico | Tan - Machine Problem #3 (ICS2609)</param-value>
     </context-param>
     <context-param>
         <param-name>key</param-name>
@@ -15,6 +15,10 @@
     <context-param>
         <param-name>cipher</param-name>
         <param-value>AES/ECB/PKCS5Padding</param-value>
+    </context-param>
+    <context-param>
+        <param-name>captcha-length</param-name>
+        <param-value>8</param-value>
     </context-param>
     <servlet>
         <servlet-name>Servlet1</servlet-name>
