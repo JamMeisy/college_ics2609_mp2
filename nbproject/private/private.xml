@@ -3,12 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/codes/SCHOOL%20CODES/college_ics2609_mp2/web/static/styles-success.css</file>
-            <file>file:/C:/codes/SCHOOL%20CODES/college_ics2609_mp2/web/index.jsp</file>
+            <file>file:/C:/codes/SCHOOL%20CODES/college_ics2609_mp2/src/java/backend/GenerateReportServlet.java</file>
+            <file>file:/C:/codes/SCHOOL%20CODES/college_ics2609_mp2/web/static/styles-login.css</file>
             <file>file:/C:/codes/SCHOOL%20CODES/college_ics2609_mp2/src/java/backend/LoginServlet.java</file>
-            <file>file:/C:/codes/SCHOOL%20CODES/college_ics2609_mp2/src/java/backend/GeneratePDFServlet.java</file>
             <file>file:/C:/codes/SCHOOL%20CODES/college_ics2609_mp2/web/success.jsp</file>
-            <file>file:/C:/codes/SCHOOL%20CODES/college_ics2609_mp2/web/WEB-INF/web.xml</file>
+            <file>file:/C:/codes/SCHOOL%20CODES/college_ics2609_mp2/src/java/backend/UpdateServlet.java</file>
         </group>
     </open-files>
 </project-private>

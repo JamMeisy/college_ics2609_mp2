@@ -19,9 +19,11 @@ import com.itextpdf.text.FontFactory;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfPageEventHelper;
 import com.itextpdf.text.pdf.PdfWriter;
 import exceptions.InvalidSessionException;
 import java.io.OutputStream;
@@ -42,6 +44,7 @@ public class GenerateReportServlet extends HttpServlet {
 
     String driver, url, dbuser, dbpass, key, cipher;
     Security sec;
+
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         driver = getServletContext().getInitParameter("driver");
@@ -94,101 +97,138 @@ public class GenerateReportServlet extends HttpServlet {
             String userRole = (String) request.getAttribute("role");
             String userPass = (String) request.getAttribute("password");
             String username = (String) request.getAttribute("username");
-            
+
+            username = (String) request.getSession().getAttribute("username");
+            userRole = (String) request.getSession().getAttribute("role");
+            userPass = (String) request.getSession().getAttribute("password");
+
             System.out.println(username);
-            
+            System.out.println(userRole);
+            System.out.println(userPass);
+
             // Security
-            // boolean authorized = false;
+            boolean authorized = false;
             for (UserData i : data) {
                 if (i.getUsername().equals(username)) {
                     if (i.getPassword().equals(sec.encrypt(userPass))) {
-                        //authorized = true;
+                        authorized = true;
+                        break;
+                    } else {
                         break;
                     }
-                    else
-                        break;
                 }
             }
-            
-            //if (!authorized)
-            //    throw new InvalidSessionException("Unauthorized Access");
-            
 
+            if (!authorized) {
+                throw new InvalidSessionException("Unauthorized Access");
+            }
             // Set content type
             response.setContentType("application/pdf");
 
             // Create PDF document
             try (OutputStream out = response.getOutputStream()) {
-                Document document = new Document(PageSize.LETTER);
+                Document document;
+                if ("Admin".equals(userRole)) {
+                    document = new Document(PageSize.LETTER);
+                } else {
+                    Rectangle customPageSize = new Rectangle(400f, 250f); // 1 inch = 72 points
+                    document = new Document(customPageSize);
+                }
                 PdfWriter writer = PdfWriter.getInstance(document, out);
+
+                // HEADER AND FOOTER
+                if ("Admin".equals(userRole)) {
+                    PdfHeaderFooter event = new PdfHeaderFooter(username, userRole, data.size());
+                    writer.setPageEvent(event);
+                } else {
+                    PdfHeaderFooter event = new PdfHeaderFooter(username, userRole, 1);
+                    writer.setPageEvent(event);
+                }
 
                 document.open();
 
-                Font headerFont = FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLDITALIC);
+                if ("Admin".equals(userRole)) {
+                    float[] columnWidths = {8f, 40f, 20f};
+                    PdfPTable table = new PdfPTable(columnWidths);
 
-                Paragraph header = new Paragraph("DATABASE REPORT", headerFont);
-                header.setAlignment(Element.ALIGN_CENTER);
-                document.add(header);
-                document.add(Chunk.NEWLINE);
+                    table.setHeaderRows(1);
 
-                // Create a PdfPTable with 2 columns if the user is not an admin, otherwise 3 columns
-                PdfPTable table = new PdfPTable("Admin".equals(userRole) ? 3 : 2);
+                    Font boldFont = new Font(Font.FontFamily.HELVETICA, 18, Font.BOLD);
+                    Font regularFont = FontFactory.getFont(FontFactory.HELVETICA, 15);
 
-                Font boldFont = new Font(Font.FontFamily.HELVETICA, 18, Font.BOLD);
-                Font regularFont = FontFactory.getFont(FontFactory.HELVETICA, 15);
+                    PdfPCell cellNum = new PdfPCell(new Phrase("No.", boldFont));
+                    cellNum.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    cellNum.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                    cellNum.setPadding(5);
+                    cellNum.setFixedHeight(40);
+                    cellNum.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                    cellNum.setBorderWidth(1f);
+                    cellNum.setBorderColor(BaseColor.BLACK);
+                    cellNum.setColspan(1);
 
-                // Create table header cells
-                PdfPCell cellUsername = new PdfPCell(new Phrase("Username", boldFont));
-                cellUsername.setHorizontalAlignment(Element.ALIGN_CENTER);
-                cellUsername.setVerticalAlignment(Element.ALIGN_MIDDLE);
-                cellUsername.setPadding(8);
-                cellUsername.setFixedHeight(40);
-                cellUsername.setBackgroundColor(BaseColor.LIGHT_GRAY);
-                cellUsername.setBorderWidth(1f);
-                cellUsername.setBorderColor(BaseColor.BLACK);
+                    PdfPCell cellUsername = new PdfPCell(new Phrase("Username", boldFont));
+                    cellUsername.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    cellUsername.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                    cellUsername.setPadding(5);
+                    cellUsername.setFixedHeight(40);
+                    cellUsername.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                    cellUsername.setBorderWidth(1f);
+                    cellUsername.setBorderColor(BaseColor.BLACK);
 
-                PdfPCell cellRole = new PdfPCell(new Phrase("Role", boldFont));
-                cellRole.setHorizontalAlignment(Element.ALIGN_CENTER);
-                cellRole.setVerticalAlignment(Element.ALIGN_MIDDLE);
-                cellRole.setPadding(8);
-                cellRole.setFixedHeight(40);
-                cellRole.setBackgroundColor(BaseColor.LIGHT_GRAY);
-                cellRole.setBorderWidth(1f);
-                cellRole.setBorderColor(BaseColor.BLACK);
+                    PdfPCell cellRole = new PdfPCell(new Phrase("Role", boldFont));
+                    cellRole.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    cellRole.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                    cellRole.setPadding(8);
+                    cellRole.setFixedHeight(40);
+                    cellRole.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                    cellRole.setBorderWidth(1f);
+                    cellRole.setBorderColor(BaseColor.BLACK);
 
-                // Add table headers
-                table.addCell(cellUsername);
-                table.addCell(cellRole);
+                    table.addCell(cellNum);
+                    table.addCell(cellUsername);
+                    table.addCell(cellRole);
 
-                // Add user data to the table
-                for (UserData userData : data) {
-                    PdfPCell usernameCell = new PdfPCell(new Phrase(userData.getUsername(), regularFont));
-                    PdfPCell roleCell = new PdfPCell(new Phrase(userData.getRole(), regularFont));
+                    int cellCount = 0;
+                    int numCell = 1;
+                    for (UserData userData : data) {
+                        PdfPCell numCellCell = new PdfPCell(new Phrase(String.valueOf(numCell), regularFont));
+                        numCellCell.setHorizontalAlignment(Element.ALIGN_CENTER);
 
-                    table.addCell(usernameCell);
-                    table.addCell(roleCell);
-                }
+                        PdfPCell usernameCell = new PdfPCell(new Phrase(userData.getUsername(), regularFont));
+                        usernameCell.setHorizontalAlignment(Element.ALIGN_CENTER);
 
-                document.add(table);
+                        PdfPCell roleCell = new PdfPCell(new Phrase(userData.getRole(), regularFont));
+                        roleCell.setHorizontalAlignment(Element.ALIGN_CENTER);
 
-                // Footer
-                Font footerFont = new Font(Font.FontFamily.HELVETICA, 15, Font.ITALIC);
+                        table.addCell(numCellCell);
+                        table.addCell(usernameCell);
+                        table.addCell(roleCell);
 
-                PdfContentByte cb = writer.getDirectContent();
-                cb.beginText();
-                cb.setFontAndSize(footerFont.getCalculatedBaseFont(false), 15); 
-                cb.setTextMatrix(document.leftMargin(), document.bottomMargin() - 10); 
-                cb.showText("Currently logged in user: " + username); 
-                cb.endText();
+                        numCell++;
+                        cellCount++;
 
-                // Adds the page number (x of y)
-                int totalPages = writer.getPageNumber();
-                for (int i = 1; i <= totalPages; i++) {
-                    cb.beginText();
-                    cb.setFontAndSize(footerFont.getCalculatedBaseFont(false), 15); 
-                    cb.setTextMatrix(document.right() - 100, document.bottomMargin() - 10); 
-                    cb.showText("Page " + i + " of " + totalPages); 
-                    cb.endText();
+                        if (cellCount == 25) {
+                            document.add(table);
+                            document.newPage();
+                            table.deleteBodyRows();
+                            cellCount = 0;
+                        }
+                    }
+                    document.add(table);
+                } else if ("Guest".equals(userRole)) {
+                    PdfPTable table = new PdfPTable(1);
+                    PdfPCell headerCell = new PdfPCell(new Phrase("Credentials"));
+                    headerCell.setVerticalAlignment(Element.ALIGN_MIDDLE);
+                    headerCell.setHorizontalAlignment(Element.ALIGN_CENTER);
+                    headerCell.setBackgroundColor(BaseColor.LIGHT_GRAY);
+                    headerCell.setPadding(5);
+                    table.addCell(headerCell);
+
+                    // Add username, password, and role to the table
+                    table.addCell("Username: " + username);
+                    table.addCell("Password: " + userPass);
+
+                    document.add(table);
                 }
 
                 document.close();
@@ -247,5 +287,56 @@ public class GenerateReportServlet extends HttpServlet {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
+
+    class PdfHeaderFooter extends PdfPageEventHelper {
+
+        private String username;
+        private String role;
+        private int maxPage;
+
+        public PdfHeaderFooter(String username, String role, int dataLength) {
+            this.username = username;
+            this.role = role;
+            this.maxPage = (int) Math.ceil(dataLength / 25.0);
+            
+            if (maxPage < 1){
+                maxPage = 1;
+            }
+        }
+
+        @Override
+        public void onStartPage(PdfWriter writer, Document document) {
+            Font headerFont = FontFactory.getFont(FontFactory.HELVETICA, 16, Font.BOLDITALIC);
+            Paragraph header = new Paragraph(role.toUpperCase() + " REPORT", headerFont);
+            header.setAlignment(Element.ALIGN_CENTER);
+            try {
+                document.add(header);
+                document.add(Chunk.NEWLINE);
+            } catch (DocumentException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @Override
+        public void onEndPage(PdfWriter writer, Document document) {
+            PdfContentByte cb = writer.getDirectContent();
+            Font footerFont = FontFactory.getFont(FontFactory.HELVETICA, 10, Font.ITALIC);
+
+            // Footer
+            cb.beginText();
+            cb.setFontAndSize(footerFont.getBaseFont(), 10);
+            cb.setTextMatrix(document.leftMargin(), document.bottomMargin() - 10);
+            cb.showText("Current User: " + username);
+            cb.endText();
+
+            // Page number
+            int pageNumber = writer.getPageNumber();
+            cb.beginText();
+            cb.setFontAndSize(footerFont.getBaseFont(), 10);
+            cb.setTextMatrix(document.right() - 100, document.bottomMargin() - 10);
+            cb.showText("Page " + pageNumber + " of " + maxPage);
+            cb.endText();
+        }
+    }
 
 }

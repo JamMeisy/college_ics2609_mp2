@@ -22,8 +22,8 @@
     String password = (String) session.getAttribute("password");
 
     // Nullifying session attribute to logout when exited
-    session.removeAttribute("password");
-    session.removeAttribute("username");
+    // session.removeAttribute("password");
+    // session.removeAttribute("username");
 %>
 
 <!DOCTYPE html>
