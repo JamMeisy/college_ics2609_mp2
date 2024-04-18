@@ -51,6 +51,7 @@ public class LoginServlet extends HttpServlet {
             // Load Driver & Establishing Connection
             Class.forName(driver);
             System.out.println("1) Loaded Driver: " + driver);
+            
             Connection conn = DriverManager.getConnection(url, dbuser,dbpass);
             System.out.println("2) Connected to: " + url);
             
@@ -98,15 +99,19 @@ public class LoginServlet extends HttpServlet {
                
             System.out.println("5) Verification Successful");
 
+            session.setAttribute("username", username);
+            session.setAttribute("role", role);
+            System.out.println("Role set in session: " + role);
+            
+            // For added security when generating reports
+            session.setAttribute("password", password);
+            
             // Case 5: Captcha Failed
             if (generatedCaptcha == null || !generatedCaptcha.equals(userCaptcha)) {
                 throw new WrongCaptchaException("CAPTCHA verification failed");
             }
 
             System.out.println("6) Captcha Verification Successful");
-                
-            session.setAttribute("username", username);
-            session.setAttribute("role", role);
                 
             // Directly send to desired page with session attributes (no data transferred)
             // Can be modified for success_advanced.jsp via /app

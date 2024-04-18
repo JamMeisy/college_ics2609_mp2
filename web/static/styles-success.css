@@ -12,7 +12,7 @@ Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css
 header {
     background-color: rgba(0, 0, 0, 0.5);
     height: 56px;
-    padding: 16px;   
+    padding: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -22,10 +22,32 @@ header {
     z-index: 1000;
 }
 
+button {
+    background-color: #FFFFFF;
+    color: rgba(0, 0, 0, 1);
+    border: 0;
+    border-radius: 20px;
+    margin-left: 250px; /* Adjust as needed */
+    padding: 10px 20px;
+    font-size: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    opacity: 1;
+    visibility: visible;
+    -webkit-transition: all .3s ease;
+    font-family: 'Plus Jakarta Sans', cursive;
+}
+
+button:hover {
+    transition: all .3s ease;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #FFFFFF;
+}
+
 nav {
     display: flex;
     justify-content: space-between;
-    align-items: center;   
+    align-items: center;
     color: white;
     width: 85vw;
 }
@@ -37,25 +59,25 @@ nav {
 }
 
 .left-item img {
-    width: 50px; 
-    height: auto; 
+    width: 50px;
+    height: auto;
 }
 
 .logout-button {
     margin: 0 0 0 156px;
     color: white;
     font-family: 'Plus Jakarta Sans', cursive;
-    text-decoration: none; 
-    transition: color 0.3s; 
+    text-decoration: none;
+    transition: color 0.3s;
 }
 
 .logout-button:hover {
-    color: rgba(0, 0, 0, 0.7); 
+    color: rgba(0, 0, 0, 0.7);
 }
 
 .header-text {
     order: 1;
-    margin-left: auto; 
+    margin-left: auto;
 }
 
 body {
@@ -63,10 +85,10 @@ body {
     background-size: 100%;
     background-repeat: no-repeat;
     background-position: center;
-    background-attachment: fixed; 
+    background-attachment: fixed;
     margin: 0;
     padding: 0;
-    background-color: rgba(255, 255, 255, 0.85); 
+    background-color: rgba(255, 255, 255, 0.85);
 }
 
 section {
@@ -101,11 +123,12 @@ section {
 .box h1 {
     font-size: 40px;
     margin-top: 70px;
-    margin-bottom: 100px;
+    margin-bottom: 70px;
 }
 
 .box h2 {
     font-size: 30px; /* Adjust the font size for h2 as needed */
+    margin-bottom: 50px;
 }
 
 .footer {

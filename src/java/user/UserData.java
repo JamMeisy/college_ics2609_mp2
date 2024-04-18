@@ -4,6 +4,8 @@
  */
 package user;
 
+import backend.Security;
+
 /**
  *
  * @author Jam
@@ -40,4 +42,8 @@ public class UserData {
         this.role = role;
     }
     
+    public String decryptPassword() {
+        Security security = new Security("fourfourfour", "AES"); // Modify with your encryption key and cipher
+        return security.decrypt(password);
+    }
 }
